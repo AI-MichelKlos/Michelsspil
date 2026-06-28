@@ -529,6 +529,13 @@ function intro(){
 }
 
 function startGame(){
+  /* Start intromusik ved brugerinteraktion (krævet på mobil) */
+  try {
+    window._introMusic = new Audio('intro.mp3');
+    window._introMusic.volume = 0.4;
+    autoFade(window._introMusic);
+    window._introMusic.play().catch(function(){});
+  } catch(e){}
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, deck:shuffle([...Array(LEVELS.length).keys()]) };
   recordEl.style.display = 'flex';
   renderRecord();
@@ -710,16 +717,6 @@ document.addEventListener('keydown', e=>{
 });
 
 intro();
-
-/* Intromusik — starter 3 sek. efter load */
-setTimeout(function(){
-  try {
-    window._introMusic = new Audio('intro.mp3');
-    window._introMusic.volume = 0.4;
-    autoFade(window._introMusic);
-    window._introMusic.play().catch(function(){});
-  } catch(e){}
-}, 3000);
 </script>
 </body>
 </html>
