@@ -77,19 +77,7 @@
   .verdict.bad{color:var(--red-dk)} .verdict.bad .dot{background:var(--red)}
   .vsub{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;color:#6b6457;margin-bottom:14px}
   .consequence{font-size:15px;line-height:1.55;color:#2c2823}
-
-  /* Her er den opdaterede lilla 'Til eftertanke' boks */
-  .truth{
-    margin-top:16px;
-    padding:13px 15px;
-    background:rgba(155, 89, 182, 0.08);
-    border-left:3px solid #8e44ad;
-    border-radius:4px;
-    font-size:13.5px;
-    line-height:1.5;
-    color:#4a2b5c;
-  }
-  
+  .truth{margin-top:16px;padding:13px 15px;background:rgba(0,0,0,.05);border-left:3px solid var(--gold);border-radius:4px;font-size:13.5px;line-height:1.5;color:#4a443a}
   .truth .lab{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted-paper);display:block;margin-bottom:7px}
   .country{display:inline-block;font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--paper);background:#2c2823;padding:4px 11px;border-radius:4px;margin:2px 0 9px}
   .cardsub{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted-paper);letter-spacing:.5px;margin:-4px 0 14px}
@@ -105,8 +93,8 @@
   .truth .tag.right{background:rgba(107,158,120,.2);color:var(--green-dk)}
   .truth .tag.wrong{background:rgba(209,59,46,.16);color:var(--red-dk)}
   .truth .cmp{color:var(--muted-paper);font-weight:400}
-  .qbox{margin-top:14px;padding:12px 15px;background:rgba(28,38,46,.05);border-left:3px solid var(--gold);border-radius:4px}
-  .qbox .qlab{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted-paper);margin-bottom:5px}
+  .qbox{margin-top:14px;padding:12px 15px;background:rgba(160,140,200,.12);border-left:3px solid #9b8abf;border-radius:4px}
+  .qbox .qlab{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#9b8abf;margin-bottom:5px}
   .qbox .qt{font-size:14.5px;line-height:1.55;color:#3f3a31;font-style:italic}
   .qbox .qk{margin-top:7px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.4px;color:var(--muted-paper)}
   .rekord{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;margin:6px 0 0}
@@ -334,7 +322,7 @@ const LEVELS = [
       {t:"Han gav et par medarbejdere skylden, h\u00e6vdede intet kendskab og fortsatte, som om intet var h\u00e6ndt.", ok:false},
       {t:"Han udpegede straks en uvildig s\u00e6ranklager og udleverede alle lydb\u00e5nd frivilligt.", ok:false}
     ],
-    forklaring:"M\u00f8rkl\u00e6gningen, ikke selve indbruddet, blev hans fald. I n\u00e6sten to \u00e5r fors\u00f8gte Nixon at bremse efterforskningen, men de hemmelige lydb\u00e5nd fra Det Ovale V\u00e6relse afsl\u00f8rede, at han havde v\u00e6ret med til at d\u00e6kke over sagen n\u00e6sten fra begyndelsen. Da H\u00f8jesteret tvang ham til to udlevere b\u00e5ndene, og en rigsretssag rykkede t\u00e6ttere p\u00e5, tr\u00e5dte han tilbage i 1974 som den eneste amerikanske pr\u00e6sident nogensinde. Hans efterf\u00f8lger, Gerald Ford, ben\u00e5dede ham kort efter for samtlige forhold." },
+    forklaring:"M\u00f8rkl\u00e6gningen, ikke selve indbruddet, blev hans fald. I n\u00e6sten to \u00e5r fors\u00f8gte Nixon at bremse efterforskningen, men de hemmelige lydb\u00e5nd fra Det Ovale V\u00e6relse afsl\u00f8rede, at han havde v\u00e6ret med til at d\u00e6kke over sagen n\u00e6sten fra begyndelsen. Da H\u00f8jesteret tvang ham til at udlevere b\u00e5ndene, og en rigsretssag rykkede t\u00e6ttere p\u00e5, tr\u00e5dte han tilbage i 1974 som den eneste amerikanske pr\u00e6sident nogensinde. Hans efterf\u00f8lger, Gerald Ford, ben\u00e5dede ham kort efter for samtlige forhold." },
 
   { sag:"02", titel:"Lewinsky-sagen", based:"USA \u00b7 Bill Clinton \u00b7 1998",
     situation:"Det kommer frem, at pr\u00e6sidenten har haft et forhold til en ung praktikant i Det Hvide Hus. Han bliver afkr\u00e6vet svar, ogs\u00e5 under ed.",
@@ -382,7 +370,7 @@ const LEVELS = [
     svar:[
       {t:"Han ben\u00e6gtede blankt over for Nationalforsamlingen, at kontoen fandtes.", ok:true},
       {t:"Han indr\u00f8mmede kontoen straks og trak sig samme dag, sagen blev kendt.", ok:false},
-      {t:"Han kaldte det en politisk hetz og kr\u00e6vede en unders\u00f8gelse av sine anklagere.", ok:false}
+      {t:"Han kaldte det en politisk hetz og kr\u00e6vede en unders\u00f8gelse af sine anklagere.", ok:false}
     ],
     forklaring:"Den kategoriske ben\u00e6gtelse gjorde faldet meget h\u00e5rdere. Da det blev bevist, at budgetministeren med ansvar for skattekontrol selv havde skjult penge i udlandet, tilstod han, tr\u00e5dte tilbage og udl\u00f8ste en alvorlig tillidskrise for pr\u00e6sident Hollandes regering. Han blev senere id\u00f8mt f\u00e6ngsel for skattesvig. Sagen f\u00f8rte i Frankrig til sk\u00e6rpede regler om, at ministre skal offentligg\u00f8re deres formue." },
 
@@ -408,7 +396,7 @@ const LEVELS = [
 
   { sag:"09", titel:"Rob Ford-sagen", based:"Canada \u00b7 Rob Ford, Toronto \u00b7 2013",
     situation:"Der spredes rygter om en video, hvor byens borgmester ryger crack. Han bliver spurgt igen og igen, om den findes.",
-    spm:"Hvad gjorde Rob Ford, mentre rygterne om videoen voksede?",
+    spm:"Hvad gjorde Rob Ford, mens rygterne om videoen voksede?",
     svar:[
       {t:"Han ben\u00e6gtede gentagne gange, at videoen overhovedet fandtes.", ok:true},
       {t:"Han erkendte et misbrug, gik i behandling og trak sig midlertidigt fra posten.", ok:false},
@@ -433,8 +421,255 @@ const LEGENDS = [
   { navn:"Grigorij Rasputin", pron:"han", flavor:"den sibiriske mystiker, der hviskede tsarer i \u00f8ret og styrede udn\u00e6vnelser fra kulissen",
     desc:"Sibirisk mystiker, der fik hypnotisk indflydelse p\u00e5 den russiske tsarfamilie i starten af 1900-tallet og reelt styrede politiske udn\u00e6vnelser i kulissen, indtil han blev snigmyrdet." },
   { navn:"Steve Bannon", pron:"han", flavor:"kaos-ingen\u00f8ren bag Trumps 2016-sejr",
-    desc:"Den h\u00f8jrepopulistiske, ideologiske bulldozer bag Donald Trumps valgsejr i 2016. Brugte aggressiv kulturkamp, internet-memes og bevidst kaos til at ryste" }
+    desc:"Den h\u00f8jrepopulistiske, ideologiske bulldozer bag Donald Trumps valgsejr i 2016. Brugte aggressiv kulturkamp, internet-memes og bevidst kaos til at ryste det politiske etablissement." },
+  { navn:"Alastair Campbell", pron:"han", flavor:"Blairs frygtede pressechef, manden bag selve ordet \u2019spin\u2019",
+    desc:"Tony Blairs frygtede pressechef, der i 90\u2019erne og 00\u2019erne lagde navn til begrebet \u201Dspin\u201D. Kendt for sit aggressive temperament og et jerngreb om den britiske presse." },
+  { navn:"Dominic Cummings", pron:"han", flavor:"Brexit-hjernen med foragt for embedsv\u00e6rket",
+    desc:"Den uortodokse, systemkritiske hjerne bag Brexit-kampagnen og topr\u00e5dgiver for Boris Johnson. Styrede Downing Street med en kaotisk, disruptiv filosofi og foragt for embedsv\u00e6rket." },
+  { navn:"Karl Rove", pron:"han", flavor:"\u2019Bush\u2019s Brain\u2019 \u2014 datadrevet og n\u00e5desl\u00f8s",
+    desc:"Manden bag George W. Bush, kendt som \u201DBush\u2019s Brain\u201D. Revolutionerede amerikansk politik ved at bruge avanceret datastyring og aggressive, langsigtede strategier til at knuse modstanderne." },
+  { navn:"Judy Smith", pron:"hun", flavor:"Washingtons mester i at begrave skandaler \u2014 forbilledet for tv-serien Scandal",
+    desc:"USA\u2019s mest kendte krise-PR-ekspert og tidligere pressechef i Det Hvide Hus. Lever af at begrave topskandaler for politikere og var inspirationen til tv-serien Scandal." },
+  { navn:"Martin Rossen", pron:"han", flavor:"Mette Frederiksens tidligere stabschef",
+    desc:"Mette Frederiksens t\u00e6tte stabschef under hendes f\u00f8rste regering. Fik hidtil uset formel magt i regeringens topudvalg og blev af oppositionen udr\u00e5bt som landets m\u00e6gtigste, uvalgte politiker." }
 ];
+
+const CITATER = {
+  "01":{ t:"Magt korrumperer, og absolut magt korrumperer absolut.", k:"Lord Acton" },
+  "02":{ t:"Taler du sandt, beh\u00f8ver du ikke huske p\u00e5 noget.", k:"Mark Twain" },
+  "03":{ t:"Storhedens pris er ansvar.", k:"Winston Churchill" },
+  "04":{ t:"Alle ser, hvad du synes at v\u00e6re; f\u00e5 m\u00e6rker, hvad du i virkeligheden er.", k:"Niccol\u00f2 Machiavelli" },
+  "05":{ t:"Alle dyr er lige, men nogle dyr er mere lige end andre.", k:"George Orwell" },
+  "06":{ t:"Hykleri er den hyldest, lasten yder dyden.", k:"Fran\u00e7ois de La Rochefoucauld" },
+  "07":{ t:"Vores frihed afh\u00e6nger af pressefriheden, og den kan ikke begr\u00e6nses uden at g\u00e5 tabt.", k:"Thomas Jefferson" },
+  "08":{ t:"Umodne digtere efterligner; modne digtere stj\u00e6ler.", k:"T.S. Eliot" },
+  "09":{ t:"Intet er lettere end selvbedrag, for vi tror gerne det, vi \u00f8nsker.", k:"Demosthenes" },
+  "10":{ t:"Jo mere ford\u00e6rvet en stat er, jo flere love har den.", k:"Tacitus" }
+};
+
+/* Portrætfotos — læg billederne i images/ */
+const FOTO = {
+  "01":"images/nixon.jpg","02":"images/clinton.jpg","03":"images/kennedy.jpg",
+  "04":"images/profumo.jpg","05":"images/johnson.jpg","06":"images/cahuzac.jpg",
+  "07":"images/wulff.jpg","08":"images/guttenberg.jpg","09":"images/ford.jpg",
+  "10":"images/zuma.jpg"
+};
+
+let state = { i:0, history:[], rigtige:0, slots:{}, started:false };
+const app = document.getElementById('app');
+const recordEl = document.getElementById('record');
+const segsEl = document.getElementById('segs');
+const recLbl = document.getElementById('rec-lbl');
+const caseCount = document.getElementById('casecount');
+
+segsEl.innerHTML = LEVELS.map((_,i)=>`<span class="seg" id="seg-${i}"></span>`).join('');
+
+function renderRecord(){
+  LEVELS.forEach((_,i)=>{
+    const seg = document.getElementById('seg-'+i);
+    seg.className = 'seg' + (state.history[i]===true?' r':state.history[i]===false?' w':'');
+    seg.textContent = state.history[i]===true ? '\u2713' : state.history[i]===false ? '\u2717' : '';
+    if(i===state.i && state.history[i]===undefined) seg.classList.add('cur');
+  });
+  recLbl.innerHTML = `<b>${state.rigtige}</b> rigtige`;
+}
+
+function intro(){
+  recordEl.style.display = 'none';
+  caseCount.textContent = '';
+  app.innerHTML = `
+    <div class="panel fade">
+      <div class="card">
+        <div class="stamp land">Klassificeret</div>
+        <div class="meta">Sagsmappe // kun til dine \u00f8jne</div>
+        <h1 class="cover-title">Spin <span class="amp">&amp;</span> Skandale</h1>
+        <div class="cover-sub">Krisemanageren</div>
+        <div class="dossier">
+          <div class="drow"><span class="dk">Klient</span><span class="redact" style="width:150px"></span></div>
+          <div class="drow"><span class="dk">Din status</span><span class="dv">Praktikant uden referencer</span></div>
+          <div class="drow"><span class="dk">Opgave</span><span class="dv">10 sager. Kend sandheden.</span></div>
+        </div>
+        <p class="situation">Du er fuldst\u00e6ndig ny i branchen, en gr\u00f8n praktikant i krisekommunikationens skyggeverden. Inden spindoktor-ligaen vil bruge dig, s\u00e6tter de dig p\u00e5 pr\u00f8ve: kender du overhovedet din krisehistorie?</p>
+        <p class="situation" style="margin-top:12px">Ti ber\u00f8mte skandaler. For hver skal du svare p\u00e5, hvad der rent faktisk skete. Tre svarmuligheder, alle plausible, men kun \u00e9t er sandt. Jo flere du rammer, jo mere legendarisk en mentor ringer til sidst.</p>
+        <button class="btn go big" id="start" style="margin-top:18px">\ud83d\udcde Tag telefonen \u25b8</button>
+      </div>
+    </div>`;
+  document.getElementById('start').onclick = startGame;
+}
+
+function startGame(){
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, deck:shuffle([...Array(LEVELS.length).keys()]) };
+  recordEl.style.display = 'flex';
+  renderRecord();
+  showCase();
+}
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function parseBased(b){ const p=b.split('\u00b7').map(s=>s.trim()); return {land:p[0]||'', person:p[1]||'', aar:p[p.length-1]||''}; }
+
+function showCase(){
+  window.scrollTo({top:0,behavior:'smooth'});
+  const lv = LEVELS[state.deck[state.i]];
+  const b = parseBased(lv.based);
+  const nr = String(state.i+1).padStart(2,'0');
+  const ord = shuffle([0,1,2]);
+  state.slots = ord;
+  caseCount.textContent = 'SAG ' + (state.i+1) + ' / 10';
+  renderRecord();
+
+  const buttons = ord.map((optIdx,slot)=>{
+    const o = lv.svar[optIdx];
+    return `<button class="choice" data-slot="${slot}"><span class="key">${SLOTS[slot]}</span><span>${o.t}</span></button>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="panel fade">
+      <div class="card">
+        <div class="stamp">Aktiv sag</div>
+        <div class="portrait"><img src="${FOTO[lv.sag]}" alt="${lv.titel}"></div>
+        <div class="meta">Sag nr. ${nr}</div>
+        <div class="country">${b.land}</div>
+        <h2 class="case-title">${lv.titel}</h2>
+        <div class="cardsub">${b.person} \u00b7 ${b.aar}</div>
+        <p class="situation">${lv.situation}</p>
+        <div class="prompt">Sp\u00f8rgsm\u00e5l</div>
+        <p class="question">${lv.spm}</p>
+        <div class="choices">${buttons}</div>
+      </div>
+    </div>`;
+  app.querySelectorAll('.choice').forEach(b=>{ b.onclick = ()=> choose(parseInt(b.dataset.slot,10)); });
+}
+
+function choose(slot){
+  window.scrollTo({top:0,behavior:'smooth'});
+  const lv = LEVELS[state.deck[state.i]];
+  const b = parseBased(lv.based);
+  const nr = String(state.i+1).padStart(2,'0');
+  const picked = lv.svar[ state.slots[slot] ];
+  const good = !!picked.ok;
+  const correct = lv.svar.find(o=>o.ok);
+  const q = CITATER[lv.sag];
+
+  state.history[state.i] = good;
+  if(good) state.rigtige++;
+  renderRecord();
+
+  /* === Lydeffekter og skærm-ryst === */
+  try {
+    if(good){ SFX.correct(); }
+    else { SFX.wrong(); screenShake(); }
+  } catch(e){}
+
+  app.innerHTML = `
+    <div class="panel fade">
+      <div class="card">
+        <div class="stamp land" style="${good?'color:var(--green);border-color:var(--green)':''}">${good ? 'Rigtigt' : 'Forkert'}</div>
+        <div class="portrait"><img src="${FOTO[lv.sag]}" alt="${lv.titel}"></div>
+        <div class="meta">Sag nr. ${nr} \u00b7 dit svar</div>
+        <div class="country">${b.land}</div>
+        <h2 class="case-title">${lv.titel}</h2>
+        <div class="verdict ${good?'good':'bad'}"><span class="dot"></span>${good ? 'Rigtigt svar' : 'Forkert svar'}</div>
+        ${good ? '' : `<div class="vsub">Du svarede: ${picked.t}</div>`}
+        <div class="answer"><span class="alab">Det rigtige svar</span>${correct.t}</div>
+        <div class="truth"><span class="lab">S\u00e5dan gik det i virkeligheden \u00b7 ${b.aar}</span>${lv.forklaring}</div>
+        <div class="qbox"><div class="qlab">Til eftertanke</div><div class="qt">${q.t}</div><div class="qk">${q.k}</div></div>
+        <div class="actions" id="act"></div>
+      </div>
+    </div>`;
+
+  const act = document.getElementById('act');
+  if(state.i === LEVELS.length - 1){
+    act.innerHTML = `<button class="btn go big" id="next">Se dit jobtilbud \u25b8</button>`;
+    document.getElementById('next').onclick = ending;
+  } else {
+    act.innerHTML = `<button class="btn big" id="next">N\u00e6ste sag \u25b8</button>`;
+    document.getElementById('next').onclick = ()=>{ state.i++; showCase(); };
+  }
+}
+
+const OIL_ART = `<svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg"><title>Olieboring ud for Gr\u00f8nland med isbj\u00f8rne der flygter</title><desc>Satirisk nat-arktisk scene med boreplatform, oliep\u00f8l og tre isbj\u00f8rne p\u00e5 revnet is under nordlys.</desc><defs><linearGradient id="oilsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d141a"/><stop offset="1" stop-color="#16242a"/></linearGradient></defs><rect x="0" y="0" width="680" height="198" fill="url(#oilsky)"/><path d="M0 58 C140 30,260 78,400 52 C520 32,610 70,680 50 L680 96 C600 70,520 104,400 82 C260 60,140 96,0 100 Z" fill="#6b9e78" opacity="0.12"/><path d="M0 72 C160 50,300 88,460 66 C560 52,640 78,680 66 L680 86 C620 72,560 96,460 80 C300 64,160 96,0 96 Z" fill="#7fb98e" opacity="0.08"/><circle cx="96" cy="56" r="30" fill="#e9eeec" opacity="0.10"/><circle cx="96" cy="56" r="21" fill="#e7ecea"/><circle cx="210" cy="30" r="1.3" fill="#cdd6d6" opacity="0.8"/><circle cx="268" cy="48" r="1.1" fill="#cdd6d6" opacity="0.7"/><circle cx="350" cy="26" r="1.3" fill="#cdd6d6" opacity="0.8"/><circle cx="438" cy="42" r="1.1" fill="#cdd6d6" opacity="0.7"/><circle cx="556" cy="30" r="1.2" fill="#cdd6d6" opacity="0.8"/><circle cx="624" cy="120" r="1.1" fill="#cdd6d6" opacity="0.6"/><path d="M0 198 L70 191 L150 196 L230 190 L320 197 L320 199 L0 199 Z" fill="#34474f" opacity="0.55"/><path d="M360 198 L430 192 L520 196 L600 191 L680 197 L680 199 L360 199 Z" fill="#34474f" opacity="0.45"/><rect x="0" y="198" width="680" height="102" fill="#11202a"/><rect x="0" y="197" width="680" height="2" fill="#26424d"/><path d="M470 201 L468 248" stroke="#243842" stroke-width="5" opacity="0.4"/><path d="M516 201 L516 252" stroke="#243842" stroke-width="5" opacity="0.4"/><path d="M562 201 L564 248" stroke="#243842" stroke-width="5" opacity="0.4"/><ellipse cx="514" cy="252" rx="104" ry="14" fill="#0a1014" opacity="0.85"/><ellipse cx="512" cy="249" rx="80" ry="8" fill="#2c5e52" opacity="0.20"/><ellipse cx="560" cy="140" rx="120" ry="92" fill="#d49a4a" opacity="0.05"/><path d="M448 201 L441 270" stroke="#3c4a54" stroke-width="4" fill="none"/><path d="M496 201 L491 270" stroke="#3c4a54" stroke-width="4" fill="none"/><path d="M540 201 L545 270" stroke="#3c4a54" stroke-width="4" fill="none"/><path d="M586 201 L592 270" stroke="#3c4a54" stroke-width="4" fill="none"/><path d="M448 214 L491 248 M496 214 L443 248 M540 214 L592 248 M586 214 L546 248" stroke="#4c5b63" stroke-width="1.2" fill="none"/><rect x="432" y="191" width="160" height="10" fill="#3c4a54"/><rect x="450" y="194" width="4" height="4" fill="#f4c64e"/><rect x="486" y="194" width="4" height="4" fill="#f4c64e"/><rect x="556" y="194" width="4" height="4" fill="#f4c64e"/><path d="M500 191 L516 78 M548 191 L532 78" stroke="#4a5860" stroke-width="2.5" fill="none"/><path d="M500 188 L548 168 L502 150 L546 132 L504 114 L544 96 L516 80" stroke="#62727a" stroke-width="1.2" fill="none"/><rect x="513" y="72" width="22" height="7" fill="#4a5860"/><circle cx="524" cy="71" r="6" fill="#ff5a4a" opacity="0.25"/><circle cx="524" cy="71" r="2.4" fill="#ff6a5a"/><path d="M540 96 L612 78" stroke="#4a5860" stroke-width="3" fill="none"/><ellipse cx="622" cy="40" rx="8" ry="6" fill="#6a7178" opacity="0.18"/><ellipse cx="632" cy="26" rx="11" ry="8" fill="#6a7178" opacity="0.13"/><ellipse cx="645" cy="12" rx="14" ry="10" fill="#6a7178" opacity="0.09"/><path d="M612 80 C606 64,618 60,614 44 C624 58,622 70,620 80 Z" fill="#d23b2e"/><path d="M613 80 C609 66,617 62,615 50 C621 62,619 72,618 80 Z" fill="#ee7a2e"/><path d="M614 80 C611 70,616 66,615 58 C619 68,617 74,617 80 Z" fill="#f4c64e"/><polygon points="216,260 270,254 330,258 328,273 260,277 218,270" fill="#cdd9dd"/><polygon points="216,260 270,254 330,258 328,261 270,257 218,263" fill="#eef4f5"/><polygon points="218,270 260,277 328,273 328,279 260,283 218,276" fill="#9fb1b7"/><polygon points="8,256 60,250 150,251 200,256 198,270 120,276 30,274 6,266" fill="#cdd9dd"/><polygon points="8,256 60,250 150,251 200,256 196,259 150,255 60,254 10,259" fill="#eef4f5"/><polygon points="6,266 30,274 120,276 198,270 198,277 120,282 30,280 6,272" fill="#9fb1b7"/><path d="M150 251 L156 262 L150 270" stroke="#7e9097" stroke-width="1.4" fill="none" opacity="0.7"/><g transform="translate(36,210)"><ellipse cx="34" cy="40" rx="30" ry="4" fill="#0a1116" opacity="0.35"/><rect x="45" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><rect x="15" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><ellipse cx="34" cy="19" rx="26" ry="13" fill="#eef1ec"/><ellipse cx="24" cy="11" rx="13" ry="10" fill="#eef1ec"/><polygon points="12,14 2,21 13,26 21,19" fill="#eef1ec"/><ellipse cx="8" cy="22" rx="8" ry="6.5" fill="#eef1ec"/><ellipse cx="1" cy="24" rx="5" ry="3.6" fill="#e4e9e7"/><circle cx="11" cy="14" r="2.6" fill="#eef1ec"/><rect x="22" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><rect x="51" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><ellipse cx="34" cy="27" rx="22" ry="6" fill="#d9e0e0" opacity="0.55"/><circle cx="-3" cy="24" r="1.3" fill="#20272b"/></g><g transform="translate(118,214) scale(0.9)"><ellipse cx="34" cy="40" rx="30" ry="4" fill="#0a1116" opacity="0.32"/><rect x="45" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><rect x="15" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><ellipse cx="34" cy="19" rx="26" ry="13" fill="#eef1ec"/><ellipse cx="24" cy="11" rx="13" ry="10" fill="#eef1ec"/><polygon points="12,14 2,21 13,26 21,19" fill="#eef1ec"/><ellipse cx="8" cy="22" rx="8" ry="6.5" fill="#eef1ec"/><ellipse cx="1" cy="24" rx="5" ry="3.6" fill="#e4e9e7"/><circle cx="11" cy="14" r="2.6" fill="#eef1ec"/><rect x="22" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><rect x="51" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><ellipse cx="34" cy="27" rx="22" ry="6" fill="#d9e0e0" opacity="0.55"/><circle cx="-3" cy="24" r="1.3" fill="#20272b"/></g><g transform="translate(252,216) scale(0.82)"><ellipse cx="34" cy="40" rx="30" ry="4" fill="#0a1116" opacity="0.30"/><rect x="45" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><rect x="15" y="24" width="7" height="16" rx="3" fill="#c9d3d2"/><ellipse cx="34" cy="19" rx="26" ry="13" fill="#eef1ec"/><ellipse cx="24" cy="11" rx="13" ry="10" fill="#eef1ec"/><polygon points="12,14 2,21 13,26 21,19" fill="#eef1ec"/><ellipse cx="8" cy="22" rx="8" ry="6.5" fill="#eef1ec"/><ellipse cx="1" cy="24" rx="5" ry="3.6" fill="#e4e9e7"/><circle cx="11" cy="14" r="2.6" fill="#eef1ec"/><rect x="22" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><rect x="51" y="25" width="7" height="15" rx="3" fill="#f5f7f4"/><ellipse cx="34" cy="27" rx="22" ry="6" fill="#d9e0e0" opacity="0.55"/><circle cx="-3" cy="24" r="1.3" fill="#20272b"/></g></svg>`;
+
+const COAL_ART = `<svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg"><title>Kulkraftv\u00e6rk med rygende k\u00f8let\u00e5rne</title><desc>Stiliseret industriscene med kulkraftv\u00e6rk, k\u00f8let\u00e5rne og skorstene under en forurenet himmel.</desc><defs><linearGradient id="coalsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#211d18"/><stop offset="1" stop-color="#5a4a36"/></linearGradient></defs><rect x="0" y="0" width="680" height="235" fill="url(#coalsky)"/><circle cx="558" cy="72" r="50" fill="#d49a4a" opacity="0.12"/><circle cx="558" cy="72" r="30" fill="#d49a4a" opacity="0.34"/><rect x="0" y="198" width="680" height="37" fill="#6a583f" opacity="0.4"/><rect x="0" y="235" width="680" height="65" fill="#17140f"/><rect x="0" y="234" width="680" height="2" fill="#2c2418"/><ellipse cx="300" cy="236" rx="250" ry="28" fill="#d49a4a" opacity="0.06"/><path d="M598 235 L612 120 M634 235 L620 120" stroke="#20262b" stroke-width="2" fill="none"/><path d="M600 150 L632 150 M596 168 L636 168 M612 120 L620 120" stroke="#20262b" stroke-width="2" fill="none"/><path d="M600 168 L632 150 M632 168 L600 150 M602 200 L630 170 M630 200 L602 170 M604 235 L628 200 M628 235 L604 200" stroke="#20262b" stroke-width="1" fill="none"/><path d="M600 150 Q 460 186 320 166" stroke="#15120e" stroke-width="1" fill="none" opacity="0.5"/><path d="M596 168 Q 470 202 344 184" stroke="#15120e" stroke-width="1" fill="none" opacity="0.45"/><path d="M634 150 Q 660 158 680 153" stroke="#15120e" stroke-width="1" fill="none" opacity="0.45"/><path d="M134 98 C138 120,144 132,144 152 C144 184,120 208,120 235 L240 235 C240 208,216 184,216 152 C216 132,222 120,226 98 Z" fill="#2c3137"/><ellipse cx="180" cy="98" rx="46" ry="8" fill="#3a4047"/><ellipse cx="180" cy="98" rx="40" ry="6" fill="#14181c"/><path d="M294 116 C298 134,302 148,302 164 C302 192,282 212,282 235 L382 235 C382 212,362 192,362 164 C362 148,366 134,370 116 Z" fill="#2c3137"/><ellipse cx="332" cy="116" rx="38" ry="7" fill="#3a4047"/><ellipse cx="332" cy="116" rx="33" ry="5" fill="#14181c"/><ellipse cx="185" cy="82" rx="30" ry="17" fill="#d9d3c5" opacity="0.5"/><ellipse cx="200" cy="60" rx="27" ry="17" fill="#d9d3c5" opacity="0.36"/><ellipse cx="216" cy="40" rx="24" ry="16" fill="#d9d3c5" opacity="0.24"/><ellipse cx="232" cy="22" rx="20" ry="14" fill="#d9d3c5" opacity="0.14"/><ellipse cx="332" cy="102" rx="22" ry="13" fill="#d9d3c5" opacity="0.42"/><ellipse cx="344" cy="84" rx="19" ry="12" fill="#d9d3c5" opacity="0.3"/><ellipse cx="356" cy="68" rx="16" ry="11" fill="#d9d3c5" opacity="0.2"/><ellipse cx="368" cy="54" rx="13" ry="9" fill="#d9d3c5" opacity="0.12"/><rect x="430" y="66" width="16" height="169" fill="#2a2f34"/><rect x="430" y="68" width="16" height="9" fill="#c0392b"/><rect x="430" y="80" width="16" height="6" fill="#e3ddd0"/><rect x="430" y="89" width="16" height="9" fill="#c0392b"/><rect x="466" y="92" width="12" height="143" fill="#2a2f34"/><rect x="466" y="94" width="12" height="7" fill="#c0392b"/><ellipse cx="442" cy="56" rx="15" ry="11" fill="#4a4640" opacity="0.5"/><ellipse cx="456" cy="40" rx="19" ry="13" fill="#4a4640" opacity="0.38"/><ellipse cx="472" cy="24" rx="23" ry="15" fill="#4a4640" opacity="0.26"/><ellipse cx="490" cy="12" rx="26" ry="16" fill="#4a4640" opacity="0.15"/><ellipse cx="474" cy="84" rx="12" ry="9" fill="#4a4640" opacity="0.4"/><ellipse cx="484" cy="70" rx="15" ry="10" fill="#4a4640" opacity="0.28"/><ellipse cx="496" cy="56" rx="17" ry="11" fill="#4a4640" opacity="0.16"/><rect x="96" y="206" width="430" height="30" fill="#20262b"/><rect x="120" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><rect x="148" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><rect x="176" y="214" width="5" height="7" fill="#c9a24b" opacity="0.45"/><rect x="204" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><rect x="262" y="214" width="5" height="7" fill="#c9a24b" opacity="0.6"/><rect x="300" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><rect x="338" y="214" width="5" height="7" fill="#c9a24b" opacity="0.45"/><rect x="406" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><rect x="448" y="214" width="5" height="7" fill="#c9a24b" opacity="0.6"/><rect x="492" y="214" width="5" height="7" fill="#c9a24b" opacity="0.7"/><polygon points="6,272 26,250 56,240 92,244 122,256 132,272" fill="#0d0c0b"/><polygon points="26,250 56,240 92,244 90,247 56,243 28,253" fill="#2a2620" opacity="0.7"/></svg>`;
+
+function ending(){
+  window.scrollTo({top:0,behavior:'smooth'});
+  const r = state.rigtige;
+  const recIdx = (r >= 5) ? (10 - r) : 6;
+  const rec = LEGENDS[recIdx];
+  const grid = state.history.map(h => h ? '\ud83d\udfe9' : '\ud83d\udfe5').join('');
+  let rekord = 0;
+  try { rekord = parseInt(localStorage.getItem('spin_rekord')||'0',10) || 0; } catch(e){}
+  const nyRekord = r > rekord;
+  if(nyRekord){ rekord = r; try { localStorage.setItem('spin_rekord', String(r)); } catch(e){} }
+
+  /* === Cha-ching ved ny rekord === */
+  if(nyRekord){ try { SFX.rekord(); } catch(e){} }
+
+  const farve  = (r >= 5) ? "var(--green)" : "var(--red)";
+  const border = (r >= 5) ? "var(--green-dk)" : "var(--red-dk)";
+
+  let txt;
+  if(r >= 5){
+    const S = rec.pron==='hun' ? 'Hun' : 'Han';
+    const s = rec.pron==='hun' ? 'hun' : 'han';
+    txt = `Din telefon ringer. Det er <b>${rec.navn}</b>, ${rec.flavor}. ${S} har fulgt din h\u00e5ndtering af alle ti sager og er imponeret: ${r} ud af 10 reddet. Nu vil ${s} have dig p\u00e5 en opgave. En virksomhed skal have den gr\u00f8nlandske regering til at \u00e5bne et ellers fredet omr\u00e5de, s\u00e5 der kan suges olie op, og de mangler pr\u00e6cis din slags t\u00e6ft. L\u00f8nnen er astronomisk. Samvittigheden er valgfri.`;
+  } else {
+    txt = `Din telefon ringer, men det er ikke en af de helt store legender. Det er <b>Martin Rossen</b>. Du imponerede ikke ligaen denne gang: ${r} ud af 10 rakte ikke til de internationale stjerner. Til geng\u00e6ld kan Rossen bruge dig, han skal have kulkraft tilbage p\u00e5 sporet i EU, og det kr\u00e6ver en, der ikke stiller for mange sp\u00f8rgsm\u00e5l. Velkommen i maskinrummet. Diskret, som altid.`;
+  }
+
+  const banner = '<div class="art-banner">' + (r >= 5 ? OIL_ART : COAL_ART) + '</div>';
+  const leagueRows = LEGENDS.map((L,i)=>`
+    <div class="leg${i===recIdx?' me':''}">
+      <div class="rk">${i+1}</div>
+      <div>
+        <div class="nm">${L.navn}${i===recIdx?'<span class="you">Ringede til dig</span>':''}</div>
+        <div class="ds">${L.desc}</div>
+      </div>
+    </div>`).join('');
+
+  caseCount.textContent = 'AUDITION SLUT';
+  app.innerHTML = `
+    <div class="screen fade" style="border-color:${border}">
+      <div class="kicker" style="color:${farve}">Ligaen har set dig</div>
+      <div class="bigscore" style="color:${farve}">${r} / 10</div>
+      <div class="scoreline">sager reddet</div>
+      <div class="sharegrid">${grid}</div>
+      <div class="rekord" style="color:${nyRekord ? 'var(--gold)' : 'var(--muted-paper)'}">${nyRekord ? 'Ny rekord! ' : ''}Din bedste hidtil: ${rekord} / 10</div>
+      <h2 class="rank-badge" style="color:${farve};margin-top:18px">${rec.navn} ringer</h2>
+      <p class="lede">${txt}</p>
+      ${banner}
+      <div class="league">
+        <h3>Spindoktor-ligaen</h3>
+        <div class="lsub">Jo flere sager du redder, jo h\u00f8jere i ligaen r\u00e6kker du. Her er de andre, du kunne have imponeret, eller skuffet.</div>
+        ${leagueRows}
+      </div>
+      <div class="actions" style="justify-content:flex-start;margin-top:22px;flex-wrap:wrap;gap:10px"><button class="btn go big" id="again">${r >= 5 ? 'Tag en ny runde' : 'Se om du kan f\u00e5 det gode tilbud'} \u25b8</button><button class="btn big" id="share">Del resultat \u25b8</button></div>
+    </div>`;
+  document.getElementById('again').onclick = startGame;
+  const shareBtn = document.getElementById('share');
+  shareBtn.onclick = ()=>{
+    const text = 'Spin & Skandale: Krisemanageren\n' + r + '/10, rekrutteret af ' + rec.navn + '\n' + grid + '\nKan du sl\u00e5 mig?';
+    if(navigator.share){
+      navigator.share({title:'Spin & Skandale', text:text, url:location.href}).catch(()=>{});
+    } else if(navigator.clipboard){
+      navigator.clipboard.writeText(text + '\n' + location.href).then(()=>{
+        shareBtn.textContent = 'Kopieret \u2713';
+        setTimeout(()=>{ shareBtn.textContent = 'Del resultat \u25b8'; }, 2000);
+      }).catch(()=>{});
+    }
+  };
+}
+
+document.addEventListener('keydown', e=>{
+  if(!state.started) return;
+  const idx = SLOTS.indexOf(e.key.toUpperCase());
+  if(idx >= 0){
+    const btn = app.querySelector('.choice[data-slot="'+idx+'"]');
+    if(btn) btn.click();
+  }
+});
+
+intro();
 </script>
 </body>
 </html>
