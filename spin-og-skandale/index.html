@@ -498,8 +498,6 @@ function intro(){
 }
 
 function startGame(){
-  if(window._endMusic){ window._endMusic.pause(); window._endMusic.currentTime=0; }
-  if(window._introMusic){ window._introMusic.pause(); window._introMusic.currentTime=0; }
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, deck:shuffle([...Array(LEVELS.length).keys()]) };
   recordEl.style.display = 'flex';
   renderRecord();
@@ -597,6 +595,7 @@ function ending(){
   window.scrollTo({top:0,behavior:'smooth'});
   /* Afspil slutmusik */
   try {
+    if(window._introMusic){ window._introMusic.pause(); }
     if(window._endMusic){ window._endMusic.pause(); window._endMusic.currentTime=0; }
     window._endMusic = new Audio('ending.mp3');
     window._endMusic.volume = 0.5;
