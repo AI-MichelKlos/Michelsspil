@@ -310,6 +310,37 @@ function screenShake(){
   el.addEventListener('animationend', function(){ el.classList.remove('shake'); }, {once:true});
 }
 
+/* Fade-out utility */
+function fadeOut(audio, duration){
+  if(!audio || audio.paused) return;
+  duration = duration || 2000;
+  var steps = 30;
+  var interval = duration / steps;
+  var startVol = audio.volume;
+  var step = startVol / steps;
+  var timer = setInterval(function(){
+    if(audio.volume - step > 0){
+      audio.volume -= step;
+    } else {
+      audio.volume = 0;
+      audio.pause();
+      audio.volume = startVol;
+      clearInterval(timer);
+    }
+  }, interval);
+}
+
+/* Auto-fade sidste 3 sekunder af et musikstykke */
+function autoFade(audio){
+  if(!audio) return;
+  audio.addEventListener('timeupdate', function(){
+    var remaining = audio.duration - audio.currentTime;
+    if(remaining < 3 && remaining > 0 && audio.volume > 0.01){
+      audio.volume = Math.max(0, (remaining / 3) * 0.5);
+    }
+  });
+}
+
 /* ---------------------------------------------------------
    SPILLOGIK
 --------------------------------------------------------- */
@@ -595,10 +626,11 @@ function ending(){
   window.scrollTo({top:0,behavior:'smooth'});
   /* Afspil slutmusik */
   try {
-    if(window._introMusic){ window._introMusic.pause(); }
+    if(window._introMusic){ fadeOut(window._introMusic, 1500); }
     if(window._endMusic){ window._endMusic.pause(); window._endMusic.currentTime=0; }
     window._endMusic = new Audio('ending.mp3');
     window._endMusic.volume = 0.5;
+    autoFade(window._endMusic);
     window._endMusic.play().catch(function(){});
   } catch(e){}
   const r = state.rigtige;
@@ -684,6 +716,7 @@ setTimeout(function(){
   try {
     window._introMusic = new Audio('intro.mp3');
     window._introMusic.volume = 0.4;
+    autoFade(window._introMusic);
     window._introMusic.play().catch(function(){});
   } catch(e){}
 }, 3000);
