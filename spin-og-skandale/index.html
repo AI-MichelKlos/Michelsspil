@@ -415,7 +415,7 @@ function intro(){
 
 function startGame(){
   playTrack('intro'); updateMusicBtn();
-  state = { i:0, history:[], rigtige:0, slots:{}, started:true, deck:shuffle([...Array(LEVELS.length).keys()]) };
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, deck:shuffle([...Array(LEVELS.length).keys()]) };
   recordEl.style.display = 'flex';
   renderRecord();
   showCase();
@@ -494,7 +494,11 @@ function choose(slot){
     document.getElementById('next').onclick = ending;
   } else {
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
-    document.getElementById('next').onclick = ()=>{ state.i++; showCase(); };
+    if(state.i === 4 && !state.interludeDone){
+      document.getElementById('next').onclick = ()=>{ state.interludeDone = true; interlude(); };
+    } else {
+      document.getElementById('next').onclick = ()=>{ state.i++; showCase(); };
+    }
   }
 }
 
@@ -542,6 +546,38 @@ function previewEnding(fakeScore){
   ending();
   state.rigtige = savedR;
   state.history = savedH;
+}
+
+function interlude(){
+  caseCount.textContent = 'HALVVEJS';
+  window.scrollTo(0, 0);
+  app.innerHTML = `
+    <div class="panel fade">
+      <div class="card">
+        <div class="stamp">Halvvejs</div>
+        <div class="meta">Fem sager klaret // fem tilbage</div>
+        <div class="country">Firenze, 1500-tallet</div>
+        <h2 class="case-title">Et råd fra magtens lærermester</h2>
+        <p class="situation">Du er halvvejs gennem auditionen. Før du fortsætter, er der en, der gerne vil hviske dig noget i øret. Rådet kommer fra en mand i 1500-tallets Firenze, der vidste alt om magt, frygt og kunsten at overleve ved hoffet. Vil du tage imod?</p>
+        <div id="int-act" style="margin-top:18px">
+          <button class="btn go big" id="accept">Tag imod ▸</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('accept').onclick = ()=>{
+    stopAll();
+    const act = document.getElementById('int-act');
+    act.innerHTML = `
+      <div class="art-banner"><video id="raad-video" src="machiavelli.MP4" playsinline controls style="display:block;width:100%"></video></div>
+      <div style="margin-top:14px"><button class="btn big" id="int-videre">Videre ▸</button></div>`;
+    const v = document.getElementById('raad-video');
+    let done = false;
+    const go = ()=>{ if(done) return; done = true; try { v.pause(); } catch(e){} state.i++; playTrack('intro'); showCase(); };
+    v.addEventListener('ended', go, { once:true });
+    document.getElementById('int-videre').onclick = go;
+    v.play().catch(()=>{});
+    window.scrollTo(0, 0);
+  };
 }
 
 function ending(){
