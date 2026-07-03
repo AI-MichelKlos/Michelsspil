@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spin &amp; Skandale · Krisemanageren</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Spin &amp; Skandale: Krisemanageren">
+<meta property="og:description" content="10 politiske skandaler, 10 valg. Kan du spinne dig ud af krisen og lande drømmejobbet? Test dig selv som praktikant i spinbureauet.">
+<meta property="og:url" content="https://ai-michelklos.github.io/Michelsspil/spin-og-skandale/">
+<meta property="og:image" content="https://ai-michelklos.github.io/Michelsspil/spin-og-skandale/images/nixon.jpg">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary">
+<meta name="description" content="10 politiske skandaler, 10 valg. Kan du spinne dig ud af krisen og lande drømmejobbet?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
@@ -169,6 +177,27 @@
     .screen{padding:26px 20px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+  .protokol{margin-top:26px;text-align:left}
+  .protokol h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:15px;color:var(--gold);margin-bottom:4px}
+  .protokol .psub{font-size:13px;color:var(--muted-paper);margin-bottom:12px}
+  .prow{display:flex;align-items:center;gap:12px;padding:9px 10px;border:1px solid var(--line-paper);border-radius:6px;margin-bottom:7px;background:rgba(0,0,0,.03)}
+  .prow .pmark{font-family:'Permanent Marker',cursive;font-size:19px;width:26px;text-align:center;flex-shrink:0}
+  .prow .pmark.r{color:var(--green-dk)}
+  .prow .pmark.w{color:var(--red)}
+  .prow .pimg{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);flex-shrink:0}
+  .prow .pnm{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.4px}
+  .prow .pln{font-size:12px;color:var(--muted-paper)}
+  .copy-toast{
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.92);
+    z-index:9999; pointer-events:none;
+    background:var(--ink-2); border:2px solid var(--gold); border-radius:8px;
+    padding:18px 30px; box-shadow:var(--shadow);
+    font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:2px;
+    font-size:17px; color:var(--gold); white-space:nowrap;
+    opacity:0; transition:opacity .18s ease, transform .18s ease;
+  }
+  .copy-toast.vis{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .copy-toast .chk{ font-family:'Permanent Marker',cursive; color:var(--green); font-size:20px; margin-right:8px; text-transform:none; letter-spacing:0; }
 </style>
 </head>
 <body>
@@ -304,10 +333,71 @@ const LEVELS = [
       {t:"Han tilbagebetalte straks pengene og undskyldte for det manglende opsyn.", ok:false},
       {t:"Han gav entreprenørerne skylden for at have pyntet projektet uden hans viden.", ok:false}
     ],
-    forklaring:"Bortforklaringerne, ikke mindst at en swimmingpool var et brandsikkerhedsanlæg, blev til landsdækkende satire. Først en uafhængig ombudsperson og siden forfatningsdomstolen fastslog i 2016, at Zuma havde svigtet forfatningen ved ikke at betale en del af pengene tilbage, og han blev pålagt at gøre det. Nkandla blev et af de stærkeste symboler på korruption under hans styre. I 2018 trak han sig som præsident under pres fra sit eget parti." }
+    forklaring:"Bortforklaringerne, ikke mindst at en swimmingpool var et brandsikkerhedsanlæg, blev til landsdækkende satire. Først en uafhængig ombudsperson og siden forfatningsdomstolen fastslog i 2016, at Zuma havde svigtet forfatningen ved ikke at betale en del af pengene tilbage, og han blev pålagt at gøre det. Nkandla blev et af de stærkeste symboler på korruption under hans styre. I 2018 trak han sig som præsident under pres fra sit eget parti." },
+
+  { sag:"11", titel:"Tamilsagen", based:"Danmark · Poul Schlüter · 1987-93",
+    situation:"Justitsministeren har i al stilhed sat lovpligtige familiesammenføringer for en gruppe flygtninge i bero. Sagen ulmer i årevis, og spørgsmålene når til sidst helt op til statsministeren.",
+    spm:"Hvad gjorde statsminister Poul Schlüter, da sagen spidsede til i Folketinget?",
+    svar:[
+      {t:"Han holdt en berømt tale om, at der ikke var fejet noget ind under gulvtæppet, hvilket senere viste sig ikke at holde.", ok:true},
+      {t:"Han fyrede omgående justitsministeren og nedsatte selv en uvildig undersøgelseskommission.", ok:false},
+      {t:"Han erkendte fejlen over for Folketinget og fremlagde alle sagens akter med det samme.", ok:false}
+    ],
+    forklaring:"Gulvtæppetalen fra 1989 blev sagens mest berømte replik, og den endte med at falde tilbage på ham selv. En undersøgelsesret fastslog i 1993, at berostillelsen var ulovlig, og at ansvarlige havde forsøgt at skjule forløbet. Schlüter gik af som statsminister samme dag, og den tidligere justitsminister Erik Ninn-Hansen blev i 1995 dømt ved Rigsretten, den første rigsretssag i Danmark i 85 år. Sagen står stadig som skoleeksemplet på, at mørklægningen kan vælte mere end selve fejlen." },
+
+  { sag:"12", titel:"Ibiza-sagen", based:"Østrig · Heinz-Christian Strache · 2019",
+    situation:"En skjult video fra en villa på Ibiza viser vicekansleren love offentlige kontrakter til en kvinde, han tror er niece til en russisk oligark, mod hjælp til sit parti.",
+    spm:"Hvad skete der, da videoen blev offentliggjort?",
+    svar:[
+      {t:"Han trådte tilbage inden for et døgn, regeringen kollapsede, og der blev udskrevet nyvalg.", ok:true},
+      {t:"Han afviste videoen som forfalsket manipulation og blev siddende i flere måneder.", ok:false},
+      {t:"Han undskyldte offentligt, blev reddet af kansleren og sad perioden ud.", ok:false}
+    ],
+    forklaring:"Videoen var optaget skjult i 2017 og blev offentliggjort af tyske medier i maj 2019. Strache kaldte det en fælde, men indholdet talte for sig selv, og han trådte tilbage dagen efter. Kansler Sebastian Kurz opløste koalitionen, regeringen faldt, og hans parti blev straffet hårdt ved nyvalget samme efterår. Sagen viste, hvor hurtigt et politisk liv kan slutte, når ordene er fanget på kamera, og der ikke findes en fortælling, der kan spinne dem væk." },
+
+  { sag:"13", titel:"Panama-papirerne", based:"Island · Sigmundur Davíð Gunnlaugsson · 2016",
+    situation:"Et gigantisk datalæk fra et advokatfirma i Panama afslører, at statsministerens familie har et uoplyst selskab i skattely med millionkrav i landets krakkede banker.",
+    spm:"Hvad gjorde Gunnlaugsson, da en journalist konfronterede ham med selskabet foran rullende kamera?",
+    svar:[
+      {t:"Han rejste sig og forlod interviewet midt i optagelsen, og klippet gik verden rundt.", ok:true},
+      {t:"Han forklarede roligt, at selskabet var lovligt og fuldt oplyst til skattemyndighederne.", ok:false},
+      {t:"Han afviste ethvert kendskab og henviste alle spørgsmål til sin hustrus rådgivere.", ok:false}
+    ],
+    forklaring:"Den afbrudte optagelse blev selve billedet på skandalen, langt stærkere end tallene i lækket. Dagene efter samledes nogle af de største demonstrationer i Islands historie foran Altinget, imponerende i et land med få hundrede tusinde indbyggere. Gunnlaugsson måtte forlade posten som statsminister få dage senere som det første store politiske offer for Panama-papirerne. Lektionen er klassisk: det er sjældent dokumenterne, folk husker, det er reaktionen, da spørgsmålet blev stillet." },
+
+  { sag:"14", titel:"Iran-Contra", based:"USA · Ronald Reagan · 1986-87",
+    situation:"Det afsløres, at regeringen i hemmelighed har solgt våben til et land under embargo og sendt overskuddet videre til oprørere, som Kongressen udtrykkeligt har forbudt at støtte.",
+    spm:"Hvad gjorde Reagan, da skandalen ikke længere kunne benægtes?",
+    svar:[
+      {t:"Han erkendte på tv, at beviserne viste noget andet, end han selv havde troet og sagt, og tog ansvaret på sig.", ok:true},
+      {t:"Han benægtede alt til det sidste og benådede de involverede, inden undersøgelserne kom i gang.", ok:false},
+      {t:"Han lagde hele ansvaret på CIA og fyrede sin nationale sikkerhedsrådgiver for åben skærm.", ok:false}
+    ],
+    forklaring:"Reagans tv-tale i marts 1987 blev berømt, fordi han indrømmede, at hans hjerte fortalte ham ét, mens fakta og beviser fortalte noget andet. En undersøgelseskommission kritiserede hans løsagtige ledelsesstil, dokumenter var blevet makuleret, og flere medarbejdere blev tiltalt og dømt, selvom flere domme senere faldt ved appel eller benådning. Hans popularitet dykkede markant, men rettede sig, og han sad perioden ud. Den halve indrømmelse, leveret med ro og selvironi, regnes stadig som et af de mere vellykkede kriseforsvar." },
+
+  { sag:"15", titel:"Tangentopoli", based:"Italien · Bettino Craxi · 1992-94",
+    situation:"En landsdækkende efterforskning afdækker et system, hvor partierne systematisk finansieres med bestikkelse fra virksomheder. Sporene når helt op til en tidligere regeringschef.",
+    spm:"Hvordan endte sagen for socialistlederen Bettino Craxi?",
+    svar:[
+      {t:"Han flygtede til Tunesien, blev dømt in absentia og døde i eksil som dømt mand.", ok:true},
+      {t:"Han blev frikendt ved alle instanser og vendte tilbage som partileder.", ok:false},
+      {t:"Han indgik et forlig, betalte en rekordbøde og trak sig stille ud af politik.", ok:false}
+    ],
+    forklaring:"Craxi forsvarede sig med, at alle partier gjorde det samme, og at systemet ikke kunne fungere anderledes, men det reddede ham ikke. I 1993 blev han mødt af en folkemængde, der kastede mønter efter ham foran sit hotel i Rom, et af italiensk politiks mest ikoniske øjeblikke. Året efter flygtede han til Hammamet i Tunesien, blev idømt lange fængselsstraffe in absentia og døde der i 2000. Efterforskningen fældede en hel politisk generation og banede paradoksalt nok vejen for Silvio Berlusconi." },
+
+  { sag:"16", titel:"Lockheed-skandalen", based:"Japan · Kakuei Tanaka · 1976-83",
+    situation:"En amerikansk flyproducent viser sig at have bestukket sig til ordrer verden over. I Japan peger pengesporet direkte på den tidligere premierminister.",
+    spm:"Hvad skete der med Tanaka, efter bestikkelsen kom frem?",
+    svar:[
+      {t:"Han blev anholdt og dømt, men fortsatte i årevis som en af landets mægtigste politiske bagmænd.", ok:true},
+      {t:"Han flygtede til udlandet og blev aldrig stillet for en dommer.", ok:false},
+      {t:"Han blev frikendt, fordi ingen af de centrale vidner turde stå frem i retten.", ok:false}
+    ],
+    forklaring:"Tanaka blev anholdt i 1976 og dømt i 1983 for at have modtaget et millionbeløb, men han nægtede sig skyldig, appellerede og beholdt sin plads i parlamentet. Fra kulissen styrede han fortsat den største fraktion i regeringspartiet og var i årevis den reelle kongemager i japansk politik med tilnavnet skyggeshogunen. Først et slagtilfælde i 1985 brød hans magt, og han døde i 1993, inden appelsagen var endeligt afgjort. Sagen viste, at en dom ikke nødvendigvis er enden på magten, hvis netværket består." }
 ];
 
 const SLOTS = ["A","B","C"];
+const RUNDE = 10;
 
 /* Spindoktor-ligaen, rangeret 1 (mest legendarisk) → 7. Score-krav: 10→#1 … 5→#6; under 5 → Rossen (#7) */
 const LEGENDS = [
@@ -337,13 +427,21 @@ const CITATER = {
   "07":{ t:"Vores frihed afhænger af pressefriheden, og den kan ikke begrænses uden at gå tabt.", k:"Thomas Jefferson" },
   "08":{ t:"Umodne digtere efterligner; modne digtere stjæler.", k:"T.S. Eliot" },
   "09":{ t:"Intet er lettere end selvbedrag, for vi tror gerne det, vi ønsker.", k:"Demosthenes" },
-  "10":{ t:"Jo mere fordærvet en stat er, jo flere love har den.", k:"Tacitus" }
+  "10":{ t:"Jo mere fordærvet en stat er, jo flere love har den.", k:"Tacitus" },
+  "11":{ t:"Det er en evig erfaring, at ethvert menneske med magt fristes til at misbruge den.", k:"Montesquieu" },
+  "12":{ t:"Til sidst kommer sandheden for en dag.", k:"William Shakespeare" },
+  "13":{ t:"Sollys siges at være det bedste af alle desinfektionsmidler.", k:"Louis Brandeis" },
+  "14":{ t:"Problemet med løgn og bedrag er, at deres virkning helt afhænger af en klar forestilling om den sandhed, der skal skjules.", k:"Hannah Arendt" },
+  "15":{ t:"Jo større magten er, desto farligere er misbruget.", k:"Edmund Burke" },
+  "16":{ t:"Den ædle forstår, hvad der er ret; den ringe forstår, hvad der gavner ham selv.", k:"Konfutse" }
 };
 
 const PORTRAITS = {
   "01":"nixon.jpg", "02":"clinton.jpg", "03":"kennedy.jpg",
   "04":"profumo.jpg", "05":"johnson.jpg", "06":"cahuzac.jpg",
-  "07":"wulff.jpg", "08":"guttenberg.jpg", "09":"ford.jpg", "10":"zuma.jpg"
+  "07":"wulff.jpg", "08":"guttenberg.jpg", "09":"ford.jpg", "10":"zuma.jpg",
+  "11":"schlueter.jpg", "12":"strache.jpg", "13":"gunnlaugsson.jpg",
+  "14":"reagan.jpg", "15":"craxi.jpg", "16":"tanaka.jpg"
 };
 
 let state = { i:0, history:[], rigtige:0, slots:{}, started:false };
@@ -378,10 +476,10 @@ const segsEl = document.getElementById('segs');
 const recLbl = document.getElementById('rec-lbl');
 const caseCount = document.getElementById('casecount');
 
-segsEl.innerHTML = LEVELS.map((_,i)=>`<span class="seg" id="seg-${i}"></span>`).join('');
+segsEl.innerHTML = [...Array(RUNDE)].map((_,i)=>`<span class="seg" id="seg-${i}"></span>`).join('');
 
 function renderRecord(){
-  LEVELS.forEach((_,i)=>{
+  [...Array(RUNDE)].forEach((_,i)=>{
     const seg = document.getElementById('seg-'+i);
     seg.className = 'seg' + (state.history[i]===true?' r':state.history[i]===false?' w':'');
     seg.textContent = state.history[i]===true ? '\u2713' : state.history[i]===false ? '\u2717' : '';
@@ -415,7 +513,7 @@ function intro(){
 
 function startGame(){
   playTrack('intro'); updateMusicBtn();
-  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, deck:shuffle([...Array(LEVELS.length).keys()]) };
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, deck:shuffle([...Array(LEVELS.length).keys()]).slice(0, RUNDE) };
   recordEl.style.display = 'flex';
   renderRecord();
   showCase();
@@ -489,9 +587,9 @@ function choose(slot){
 
   window.scrollTo(0, 0);
   const act = document.getElementById('act');
-  if(state.i === LEVELS.length - 1){
+  if(state.i === RUNDE - 1){
     act.innerHTML = `<button class="btn go big" id="next">Se dit jobtilbud ▸</button>`;
-    document.getElementById('next').onclick = ending;
+    document.getElementById('next').onclick = ()=> ending();
   } else {
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
     if(state.i === 4 && !state.interludeDone){
@@ -532,10 +630,21 @@ function showShareMenu(r, recNavn, grid){
     if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(()=>{
         const b = document.getElementById('share-copy');
-        b.querySelector('span:last-child').textContent = 'Kopieret ✓';
+        if(b) b.querySelector('span:last-child').textContent = 'Kopieret ✓';
+        showCopyToast();
       }).catch(()=>{});
     }
   };
+}
+function showCopyToast(){
+  const old = document.querySelector('.copy-toast');
+  if(old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'copy-toast';
+  t.innerHTML = `<span class="chk">✓</span>Kopieret til udklipsholderen`;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{ t.classList.add('vis'); });
+  setTimeout(()=>{ t.classList.remove('vis'); setTimeout(()=>{ t.remove(); }, 250); }, 1600);
 }
 function previewEnding(fakeScore){
   const savedR = state.rigtige;
@@ -543,7 +652,7 @@ function previewEnding(fakeScore){
   state.rigtige = fakeScore;
   state.history = [];
   for(let i=0;i<10;i++) state.history.push(i < fakeScore);
-  ending();
+  ending(true);
   state.rigtige = savedR;
   state.history = savedH;
 }
@@ -568,7 +677,7 @@ function interlude(){
     stopAll();
     const act = document.getElementById('int-act');
     act.innerHTML = `
-      <div class="art-banner"><video id="raad-video" src="machiavelli.MP4" playsinline controls style="display:block;width:100%"></video></div>
+      <div class="art-banner"><video id="raad-video" src="machiavelli.MP4" preload="none" playsinline controls style="display:block;width:100%"></video></div>
       <div style="margin-top:14px"><button class="btn big" id="int-videre">Videre ▸</button></div>`;
     const v = document.getElementById('raad-video');
     let done = false;
@@ -580,7 +689,7 @@ function interlude(){
   };
 }
 
-function ending(){
+function ending(isPreview){
   playTrack('ending');
   const r = state.rigtige;
   const recIdx = (r >= 5) ? (10 - r) : 6;   // 10→Rasputin … 5→Judy Smith ; under 5 → Rossen
@@ -603,6 +712,21 @@ function ending(){
   }
 
   const banner = '<div class="art-banner">' + (r >= 5 ? OIL_ART : MAAGE_ART) + '</div>';
+
+  let protokol = '';
+  if(!isPreview && state.deck && state.deck.length){
+    const rows = state.deck.map((di, i)=>{
+      const lv = LEVELS[di];
+      const b = parseBased(lv.based);
+      const good = state.history[i] === true;
+      return `<div class="prow">
+        <div class="pmark ${good?'r':'w'}">${good?'\u2713':'\u2717'}</div>
+        <img class="pimg" src="images/${PORTRAITS[lv.sag]}" alt="" onerror="this.style.display='none'">
+        <div><div class="pnm">${lv.titel}</div><div class="pln">${b.land} \u00b7 ${b.aar}</div></div>
+      </div>`;
+    }).join('');
+    protokol = `<div class="protokol"><h3>Sagsprotokol</h3><div class="psub">Rundens ti sager, i den r\u00e6kkef\u00f8lge du m\u00f8dte dem.</div>${rows}</div>`;
+  }
   const leagueRows = LEGENDS.map((L,i)=>`
     <div class="leg${i===recIdx?' me':''}">
       <div class="rk">${i+1}</div>
@@ -623,6 +747,7 @@ function ending(){
       <h2 class="rank-badge" style="color:${farve};margin-top:18px">${rec.navn} ringer</h2>
       <p class="lede">${txt}</p>
       ${banner}
+      ${protokol}
       <div class="league">
         <h3>Spindoktor-ligaen</h3>
         <div class="lsub">Jo flere sager du redder, jo højere i ligaen rækker du. Her er de andre, du kunne have imponeret, eller skuffet.</div>
