@@ -731,8 +731,9 @@ function playFilm(cards, onDone){
   const finish = ()=>{
     if(ended) return; ended = true;
     timers.forEach(clearTimeout);
+    onDone();
     ov.classList.add('out');
-    setTimeout(()=>{ ov.remove(); onDone(); }, 450);
+    setTimeout(()=>{ ov.remove(); }, 450);
   };
   ov.querySelector('#film-skip').onclick = finish;
   let t = 2000;
