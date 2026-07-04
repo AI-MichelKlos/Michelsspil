@@ -195,6 +195,20 @@
   .stone-rule:nth-child(3).vis{transform:scale(1) rotate(-1deg)}
   .stone-attrib{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted-paper);margin-top:14px;opacity:0;transition:opacity .5s}
   .stone-attrib.vis{opacity:1}
+  .gate{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:24px;padding:50px 20px}
+  .gate .gmeta{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:#8a8577;text-transform:uppercase}
+  .gate .gline{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:clamp(19px,5vw,27px);color:#f2ede2}
+  .gate-btn{background:transparent;border:2px solid var(--gold);color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:16px;padding:14px 32px;border-radius:6px;cursor:pointer;transition:background .2s}
+  .gate-btn:hover{background:rgba(201,162,75,.12)}
+  .film-overlay{position:fixed;inset:0;background:#000;z-index:9998;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .45s ease}
+  .film-overlay.out{opacity:0}
+  .film-card{opacity:0;transition:opacity .6s ease;text-align:center;padding:0 26px;max-width:640px}
+  .film-card.vis{opacity:1}
+  .film-title{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:4px;font-size:clamp(22px,6vw,40px);color:#f2ede2}
+  .film-rule{font-family:'Permanent Marker',cursive;font-size:clamp(32px,9vw,58px);color:var(--red);transform:rotate(-2deg)}
+  .film-sub{font-family:'Space Mono',monospace;font-size:13px;color:#8a8577;margin-top:14px;letter-spacing:1px}
+  .film-hoved{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:6px;font-weight:600;font-size:clamp(30px,9vw,58px);color:var(--gold);text-shadow:0 0 30px rgba(201,162,75,.35)}
+  .film-skip{position:fixed;right:16px;bottom:16px;background:transparent;border:1px solid rgba(242,237,226,.3);color:rgba(242,237,226,.75);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;padding:8px 14px;border-radius:5px;cursor:pointer;z-index:9999}
   .copy-toast{
     position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.92);
     z-index:9999; pointer-events:none;
@@ -496,6 +510,22 @@ function renderRecord(){
   recLbl.innerHTML = `<b>${state.rigtige}</b> rigtige`;
 }
 
+function gate(){
+  recordEl.style.display = 'none';
+  caseCount.textContent = '';
+  app.innerHTML = `
+    <div class="gate fade">
+      <div class="gmeta">Fortroligt materiale // adgang kun for indkaldte</div>
+      <div class="gline">Bureauet venter p\u00e5 dig.</div>
+      <button class="gate-btn" id="gate-go">Er du klar? \u25b8</button>
+    </div>`;
+  document.getElementById('gate-go').onclick = ()=>{
+    playTrack('intro'); updateMusicBtn();
+    creditsShown = true;
+    playFilm(CREDITS_FILM, intro);
+  };
+}
+
 function intro(){
   recordEl.style.display = 'none';
   caseCount.textContent = '';
@@ -524,7 +554,12 @@ function startGame(){
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, deck:shuffle([...Array(LEVELS.length).keys()]).slice(0, RUNDE) };
   recordEl.style.display = 'flex';
   renderRecord();
-  showCase();
+  if(!creditsShown){
+    creditsShown = true;
+    playFilm(CREDITS_FILM, showCase);
+  } else {
+    showCase();
+  }
 }
 
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -667,6 +702,49 @@ function previewEnding(fakeScore){
   state.history = savedH;
 }
 
+let creditsShown = false;
+const CREDITS_FILM = [
+  { h:'<div class="film-sub" style="margin-top:0">Klosemose og Reagan Production pr\u00e6senterer</div>', dur:2200 },
+  { h:'<div class="film-title">En Machiavelli Nixon produktion</div>', dur:2200 },
+  { h:'<div class="film-title" style="font-size:clamp(18px,4.5vw,30px)">Af Stanislav Kloski</div>', dur:2000 },
+  { h:'<div class="film-hoved">Spin &amp; Skandale</div><div class="film-sub">Krisemanageren</div>', dur:3200 }
+];
+
+const STONE_FILM = [
+  { h:'<div class="film-title">Washington D.C.</div><div class="film-sub">Nutiden</div>', dur:2000 },
+  { h:'<div class="film-title">Du tager opkaldet</div>', dur:2000 },
+  { h:'<div class="film-title">En h\u00e6s stemme. Tre regler.</div><div class="film-sub">De har aldrig fejlet, siger han</div>', dur:2200 },
+  { h:'<div class="film-rule">Indr\u00f8m intet.</div>', dur:2000 },
+  { h:'<div class="film-rule">Ben\u00e6gt alt.</div>', dur:2000 },
+  { h:'<div class="film-rule">G\u00e5 til modangreb.</div>', dur:2400 },
+  { h:'<div class="film-title">Roger Stone</div><div class="film-sub">Politisk konsulent. D\u00f8mt. Ben\u00e5det.</div>', dur:2600 }
+];
+
+function playFilm(cards, onDone){
+  const ov = document.createElement('div');
+  ov.className = 'film-overlay';
+  ov.innerHTML = '<div class="film-card" id="film-card"></div><button class="film-skip" id="film-skip">Spring over \u25b8\u25b8</button>';
+  document.body.appendChild(ov);
+  const cardEl = ov.querySelector('#film-card');
+  const timers = [];
+  let ended = false;
+  const finish = ()=>{
+    if(ended) return; ended = true;
+    timers.forEach(clearTimeout);
+    ov.classList.add('out');
+    setTimeout(()=>{ ov.remove(); onDone(); }, 450);
+  };
+  ov.querySelector('#film-skip').onclick = finish;
+  let t = 2000;
+  cards.forEach(c=>{
+    timers.push(setTimeout(()=>{ cardEl.innerHTML = c.h; cardEl.classList.add('vis'); }, t));
+    t += c.dur;
+    timers.push(setTimeout(()=>{ cardEl.classList.remove('vis'); }, t));
+    t += 1000;
+  });
+  timers.push(setTimeout(finish, t));
+}
+
 function stoneInterlude(){
   caseCount.textContent = 'TREDJE AKT';
   window.scrollTo(0, 0);
@@ -684,6 +762,7 @@ function stoneInterlude(){
       </div>
     </div>`;
   document.getElementById('stone-accept').onclick = ()=>{
+    playFilm(STONE_FILM, ()=>{
     const act = document.getElementById('stone-act');
     act.innerHTML = `
       <div class="stone-scene">
@@ -697,11 +776,12 @@ function stoneInterlude(){
       </div>
       <div class="truth" id="sr-fakta" style="opacity:0;transition:opacity .5s"><span class="lab">S\u00e5dan gik det ham selv</span>Reglerne er autentiske, og det er dommen ogs\u00e5. I 2019 blev Stone kendt skyldig i at lyve for Kongressen, obstruere en unders\u00f8gelse og true et vidne. F\u00e6ngsel undgik han: pr\u00e6sidenten omst\u00f8dte straffen f\u00e5 dage f\u00f8r afsoning og ben\u00e5dede ham siden. Modangreb virker tilsyneladende, hvis man kender den rette.</div>
       <div style="margin-top:14px;opacity:0;transition:opacity .5s" id="sr-btnwrap"><button class="btn big" id="stone-videre">Videre \u25b8</button></div>`;
-    const show = (id, delay)=> setTimeout(()=>{ const el = document.getElementById(id); if(el) el.classList.add('vis'); if(id==='sr-fakta'||id==='sr-btnwrap') el.style.opacity = 1; }, delay);
-    show('sr1', 500); show('sr2', 1500); show('sr3', 2500);
-    show('sr-att', 3400); show('sr-fakta', 4200); show('sr-btnwrap', 4800);
+    ['sr1','sr2','sr3','sr-att'].forEach(id=> document.getElementById(id).classList.add('vis'));
+    document.getElementById('sr-fakta').style.opacity = 1;
+    document.getElementById('sr-btnwrap').style.opacity = 1;
     document.getElementById('stone-videre').onclick = ()=>{ state.i++; showCase(); };
     window.scrollTo(0, 0);
+    });
   };
 }
 
@@ -819,7 +899,7 @@ document.addEventListener('keydown', e=>{
   }
 });
 
-intro();
+gate();
 </script>
 </body>
 </html>
