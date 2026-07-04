@@ -550,7 +550,7 @@ function intro(){
 }
 
 function startGame(){
-  playTrack('intro'); updateMusicBtn();
+  updateMusicBtn();
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, deck:shuffle([...Array(LEVELS.length).keys()]).slice(0, RUNDE) };
   recordEl.style.display = 'flex';
   renderRecord();
@@ -704,10 +704,10 @@ function previewEnding(fakeScore){
 
 let creditsShown = false;
 const CREDITS_FILM = [
-  { h:'<div class="film-sub" style="margin-top:0">Klosemose og Reagan Production pr\u00e6senterer</div>', dur:2200 },
-  { h:'<div class="film-title">En Machiavelli Nixon produktion</div>', dur:2200 },
-  { h:'<div class="film-title" style="font-size:clamp(18px,4.5vw,30px)">Af Stanislav Kloski</div>', dur:2000 },
-  { h:'<div class="film-hoved">Spin &amp; Skandale</div><div class="film-sub">Krisemanageren</div>', dur:3200 }
+  { h:'<div class="film-sub" style="margin-top:0">KlosKlos og Reagan Production pr\u00e6senterer</div>', dur:3200 },
+  { h:'<div class="film-title">En Machiavelli Nixon produktion</div>', dur:3200 },
+  { h:'<div class="film-title" style="font-size:clamp(18px,4.5vw,30px)">Af Stanislav Kloski</div>', dur:3000 },
+  { h:'<div class="film-hoved">Spin &amp; Skandale</div><div class="film-sub">Krisemanageren</div>', dur:4200 }
 ];
 
 const STONE_FILM = [
@@ -810,8 +810,14 @@ function interlude(){
       <div style="margin-top:14px"><button class="btn big" id="int-videre">Videre ▸</button></div>`;
     const v = document.getElementById('raad-video');
     let done = false;
-    const go = ()=>{ if(done) return; done = true; try { v.pause(); } catch(e){} state.i++; playTrack('intro'); showCase(); };
-    v.addEventListener('ended', go, { once:true });
+    let dwellTimer = null;
+    const go = ()=>{ if(done) return; done = true; if(dwellTimer) clearTimeout(dwellTimer); try { v.pause(); } catch(e){} state.i++; showCase(); };
+    const onVideoEnd = ()=>{
+      if(done) return;
+      try { v.pause(); } catch(e){}
+      dwellTimer = setTimeout(go, 3000);
+    };
+    v.addEventListener('ended', onVideoEnd, { once:true });
     document.getElementById('int-videre').onclick = go;
     v.play().catch(()=>{});
     window.scrollTo(0, 0);
