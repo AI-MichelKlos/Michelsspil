@@ -187,14 +187,6 @@
   .prow .pimg{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);flex-shrink:0}
   .prow .pnm{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.4px}
   .prow .pln{font-size:12px;color:var(--muted-paper)}
-  .stone-scene{margin-top:6px;text-align:center;padding:22px 10px;background:rgba(0,0,0,.05);border:1px solid var(--line-paper);border-radius:8px}
-  .stone-pic{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.35);margin-bottom:14px}
-  .stone-rule{font-family:'Permanent Marker',cursive;font-size:30px;color:var(--red);margin:6px 0;opacity:0;transform:scale(1.6) rotate(-6deg);transition:opacity .25s ease, transform .25s cubic-bezier(.2,1.6,.4,1)}
-  .stone-rule.vis{opacity:1;transform:scale(1) rotate(-2deg)}
-  .stone-rule:nth-child(2).vis{transform:scale(1) rotate(1.5deg)}
-  .stone-rule:nth-child(3).vis{transform:scale(1) rotate(-1deg)}
-  .stone-attrib{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted-paper);margin-top:14px;opacity:0;transition:opacity .5s}
-  .stone-attrib.vis{opacity:1}
   .gate{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:24px;padding:50px 20px}
   .gate .gmeta{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:#8a8577;text-transform:uppercase}
   .gate .gline{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:clamp(19px,5vw,27px);color:#f2ede2}
@@ -209,6 +201,7 @@
   .film-sub{font-family:'Space Mono',monospace;font-size:13px;color:#8a8577;margin-top:14px;letter-spacing:1px}
   .film-hoved{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:6px;font-weight:600;font-size:clamp(30px,9vw,58px);color:var(--gold);text-shadow:0 0 30px rgba(201,162,75,.35)}
   .film-video{display:block;max-width:min(100%,900px);max-height:100vh;width:100%}
+  .film-pic{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 14px rgba(0,0,0,.5);margin-bottom:20px}
   .film-skip{position:fixed;right:16px;bottom:16px;background:transparent;border:1px solid rgba(242,237,226,.3);color:rgba(242,237,226,.75);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;padding:8px 14px;border-radius:5px;cursor:pointer;z-index:9999}
   .copy-toast{
     position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.92);
@@ -244,6 +237,7 @@
 
   <audio id="bgm-intro" src="intro.mp3" preload="auto"></audio>
   <audio id="bgm-ending" src="ending.mp3" preload="auto"></audio>
+  <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="auto"></audio>
   <div class="footer">
     Satire · alle sager bygger på virkelige politiske skandaler<br>
     Spil og koncept · <span>Krisemanageren</span>
@@ -481,7 +475,7 @@ function playTrack(which){
   if(off){ off.pause(); off.currentTime = 0; }
   if(on){ on.play().catch(()=>{}); }
 }
-function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); }
+function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); const rl = document.getElementById('raad-lyd'); if(rl){ try { rl.pause(); } catch(e){} } }
 function toggleMusic(){
   musicOn = !musicOn;
   try { localStorage.setItem('spin_music', musicOn ? '1' : '0'); } catch(e){}
@@ -714,11 +708,13 @@ const CREDITS_FILM = [
 const STONE_FILM = [
   { h:'<div class="film-title">Washington D.C.</div><div class="film-sub">Nutiden</div>', dur:2000 },
   { h:'<div class="film-title">Du tager opkaldet</div>', dur:2000 },
-  { h:'<div class="film-title">En h\u00e6s stemme. Tre regler.</div><div class="film-sub">De har aldrig fejlet, siger han</div>', dur:2200 },
+  { h:'<div class="film-title">En h\u00e6s stemme i r\u00f8ret</div><div class="film-sub">Reglerne har aldrig fejlet, siger han</div>', dur:2200 },
+  { h:'<div class="film-rule">Angrib. Angrib. Angrib.</div>', dur:2000 },
+  { h:'<div class="film-rule">Forsvar dig aldrig.</div>', dur:2000 },
   { h:'<div class="film-rule">Indr\u00f8m intet.</div>', dur:2000 },
   { h:'<div class="film-rule">Ben\u00e6gt alt.</div>', dur:2000 },
   { h:'<div class="film-rule">G\u00e5 til modangreb.</div>', dur:2400 },
-  { h:'<div class="film-title">Roger Stone</div><div class="film-sub">Politisk konsulent. D\u00f8mt. Ben\u00e5det.</div>', dur:2600 }
+  { h:'<img class="film-pic" src="images/stone.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Roger Stone</div><div class="film-sub">Politisk konsulent gennem 50 \u00e5r. R\u00e5dgiver for Nixon, Reagan og Trump.</div>', dur:4600 }
 ];
 
 function playFilm(cards, onDone){
@@ -757,33 +753,14 @@ function stoneInterlude(){
         <div class="meta">Otte sager klaret // to tilbage</div>
         <div class="country">Washington D.C., nutiden</div>
         <h2 class="case-title">Et opkald fra den m\u00f8rke side</h2>
-        <p class="situation">Machiavelli hviskede dig noget i \u00f8ret ved halvvejen. Nu ringer telefonen igen. Denne gang er det ingen filosof. Det er en mand med Nixon tatoveret p\u00e5 ryggen, branchens mest berygtede overlever, selverkl\u00e6ret dirty trickster gennem et halvt \u00e5rhundrede. Han har pr\u00e6cis tre regler til dig, og han insisterer p\u00e5, at de aldrig har fejlet. Vil du h\u00f8re dem?</p>
+        <p class="situation">Machiavelli hviskede dig noget i \u00f8ret ved halvvejen. Nu ringer telefonen igen. Denne gang er det ingen filosof. Det er en mand med Nixon tatoveret p\u00e5 ryggen, branchens mest berygtede overlever, selverkl\u00e6ret dirty trickster gennem et halvt \u00e5rhundrede. Han har sine regler med til dig, og han insisterer p\u00e5, at de aldrig har fejlet. Vil du h\u00f8re dem?</p>
         <div id="stone-act" style="margin-top:18px">
           <button class="btn go big" id="stone-accept">Tag opkaldet \u25b8</button>
         </div>
       </div>
     </div>`;
   document.getElementById('stone-accept').onclick = ()=>{
-    playFilm(STONE_FILM, ()=>{
-    const act = document.getElementById('stone-act');
-    act.innerHTML = `
-      <div class="stone-scene">
-        <img class="stone-pic" src="images/stone.jpg" alt="" onerror="this.style.display='none'">
-        <div class="stone-rules">
-          <div class="stone-rule" id="sr1">Indr\u00f8m intet.</div>
-          <div class="stone-rule" id="sr2">Ben\u00e6gt alt.</div>
-          <div class="stone-rule" id="sr3">G\u00e5 til modangreb.</div>
-        </div>
-        <div class="stone-attrib" id="sr-att">Roger Stone, politisk konsulent, r\u00e5dgiver for pr\u00e6sidenter siden Nixon</div>
-      </div>
-      <div class="truth" id="sr-fakta" style="opacity:0;transition:opacity .5s"><span class="lab">S\u00e5dan gik det ham selv</span>Reglerne er autentiske, og det er dommen ogs\u00e5. I 2019 blev Stone kendt skyldig i at lyve for Kongressen, obstruere en unders\u00f8gelse og true et vidne. F\u00e6ngsel undgik han: pr\u00e6sidenten omst\u00f8dte straffen f\u00e5 dage f\u00f8r afsoning og ben\u00e5dede ham siden. Modangreb virker tilsyneladende, hvis man kender den rette.</div>
-      <div style="margin-top:14px;opacity:0;transition:opacity .5s" id="sr-btnwrap"><button class="btn big" id="stone-videre">Videre \u25b8</button></div>`;
-    ['sr1','sr2','sr3','sr-att'].forEach(id=> document.getElementById(id).classList.add('vis'));
-    document.getElementById('sr-fakta').style.opacity = 1;
-    document.getElementById('sr-btnwrap').style.opacity = 1;
-    document.getElementById('stone-videre').onclick = ()=>{ state.i++; showCase(); };
-    window.scrollTo(0, 0);
-    });
+    playFilm(STONE_FILM, ()=>{ state.i++; showCase(); });
   };
 }
 
@@ -810,12 +787,15 @@ function interlude(){
     ov.innerHTML = '<video id="raad-video" class="film-video" src="machiavelli.MP4" muted playsinline preload="auto"></video><button class="film-skip" id="raad-skip">Spring over ▸▸</button>';
     document.body.appendChild(ov);
     const v = ov.querySelector('#raad-video');
+    const lyd = document.getElementById('raad-lyd');
     let done = false;
     let dwellTimer = null;
+    const stopLyd = ()=>{ try { lyd.pause(); lyd.currentTime = 0; } catch(e){} };
     const go = ()=>{
       if(done) return; done = true;
       if(dwellTimer) clearTimeout(dwellTimer);
       try { v.pause(); } catch(e){}
+      stopLyd();
       state.i++; showCase();
       ov.classList.add('out');
       setTimeout(()=>{ ov.remove(); }, 450);
@@ -823,11 +803,13 @@ function interlude(){
     v.addEventListener('ended', ()=>{
       if(done) return;
       try { v.pause(); } catch(e){}
+      stopLyd();
       dwellTimer = setTimeout(go, 3000);
     }, { once:true });
     v.addEventListener('error', go, { once:true });
     ov.querySelector('#raad-skip').onclick = go;
     v.play().catch(()=>{});
+    if(musicOn){ try { lyd.currentTime = 0; lyd.play().catch(()=>{}); } catch(e){} }
   };
 }
 
@@ -850,7 +832,7 @@ function ending(isPreview){
     const s = rec.pron==='hun' ? 'hun' : 'han';
     txt = `Din telefon ringer. Det er <b>${rec.navn}</b>, ${rec.flavor}. ${S} har fulgt din håndtering af alle ti sager og er imponeret: ${r} ud af 10 reddet. Nu vil ${s} have dig på en opgave. En virksomhed skal have den grønlandske regering til at åbne et ellers fredet område, så der kan suges olie op, og de mangler præcis din slags tæft. Lønnen er astronomisk. Samvittigheden er valgfri.`;
   } else {
-    txt = `Din telefon ringer, men det er ikke en af de helt store legender. Det er <b>Martin Rossen</b>. Du imponerede ikke ligaen denne gang: ${r} ud af 10 rakte ikke til de internationale stjerner. Til gengæld har han en opgave, der ikke kræver finesse: fang en flok måger, mal dem grå, og skriv russiske bogstaver på vingerne. Slip dem løs over København, skyd dem ned, og aflever billederne til Mette Frederiksen som uigendrivelige beviser på russiske droner. Ingen vil stille spørgsmål. Det gør man aldrig, når svaret allerede er givet på forhånd.`;
+    txt = `Din telefon ringer. Det er <b>Martin Rossen</b>, en af de tungeste rådgivere herhjemme. Den internationale liga takkede nej denne gang: ${r} ud af 10 rakte ikke til de store udenlandske kontorer. Så det er blevet hans opgave at finde noget lokalt til dig, og han har allerede sagen klar: fang en flok måger, mal dem grå, og skriv russiske bogstaver på vingerne. Slip dem løs over København, skyd dem ned, og aflever billederne til Mette Frederiksen som uigendrivelige beviser på russiske droner. Ingen vil stille spørgsmål. Det gør man aldrig, når svaret allerede er givet på forhånd.`;
   }
 
   const banner = '<div class="art-banner">' + (r >= 5 ? OIL_ART : MAAGE_ART) + '</div>';
