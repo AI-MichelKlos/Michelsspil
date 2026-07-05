@@ -192,6 +192,7 @@
   .gate .gline{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:clamp(19px,5vw,27px);color:#f2ede2}
   .gate-btn{background:transparent;border:2px solid var(--gold);color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:16px;padding:14px 32px;border-radius:6px;cursor:pointer;transition:background .2s}
   .gate-btn:hover{background:rgba(201,162,75,.12)}
+  .gate .ghint{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:#8a8577}
   .film-overlay{position:fixed;inset:0;background:#000;z-index:9998;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .45s ease}
   .film-overlay.out{opacity:0}
   .film-card{opacity:0;transition:opacity .6s ease;text-align:center;padding:0 26px;max-width:640px}
@@ -203,6 +204,8 @@
   .film-video{display:block;max-width:min(100%,900px);max-height:100vh;width:100%}
   .film-pic{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 14px rgba(0,0,0,.5);margin-bottom:20px}
   .film-skip{position:fixed;right:16px;bottom:16px;background:transparent;border:1px solid rgba(242,237,226,.3);color:rgba(242,237,226,.75);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;padding:8px 14px;border-radius:5px;cursor:pointer;z-index:9999}
+  button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .pv-note{margin-top:20px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted-paper);border:1px dashed var(--line-paper);border-radius:6px;padding:8px 12px}
   .copy-toast{
     position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.92);
     z-index:9999; pointer-events:none;
@@ -236,12 +239,11 @@
   <div id="app"></div>
 
   <audio id="bgm-intro" src="intro.mp3" preload="auto"></audio>
-  <audio id="bgm-ending" src="ending.mp3" preload="auto"></audio>
-  <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="auto"></audio>
-  <audio id="stone-lyd" src="stone-lyd.mp3" preload="auto"></audio>
+  <audio id="bgm-ending" src="ending.mp3" preload="none"></audio>
+  <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="none"></audio>
+  <audio id="stone-lyd" src="stone-lyd.mp3" preload="none"></audio>
   <div class="footer">
-    Satire · alle sager bygger på virkelige politiske skandaler<br>
-    Spil og koncept · <span>Krisemanageren</span>
+    Udviklet af <span>KlosKlos og Reagan Production</span>
   </div>
 </div>
 
@@ -527,9 +529,12 @@ function gate(){
     <div class="gate fade">
       <div class="gmeta">Fortroligt materiale // adgang kun for indkaldte</div>
       <div class="gline">Bureauet venter p\u00e5 dig.</div>
+      <div class="ghint">Spilles bedst med lyd \u00b7 ca. 10 minutter</div>
       <button class="gate-btn" id="gate-go">Er du klar? \u25b8</button>
     </div>`;
   document.getElementById('gate-go').onclick = ()=>{
+    if(document.getElementById('gate-go').disabled) return;
+    document.getElementById('gate-go').disabled = true;
     playTrack('intro'); updateMusicBtn();
     creditsShown = true;
     playFilm(CREDITS_FILM, intro);
@@ -560,6 +565,7 @@ function intro(){
 }
 
 function startGame(){
+  stopAll();
   updateMusicBtn();
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, deck:shuffle([...Array(LEVELS.length).keys()]).slice(0, RUNDE) };
   recordEl.style.display = 'flex';
@@ -714,10 +720,10 @@ function previewEnding(fakeScore){
 
 let creditsShown = false;
 const CREDITS_FILM = [
-  { h:'<div class="film-sub" style="margin-top:0">KlosKlos og Reagan Production pr\u00e6senterer</div>', dur:3200 },
-  { h:'<div class="film-title">En Machiavelli Nixon produktion</div>', dur:3200 },
-  { h:'<div class="film-title" style="font-size:clamp(18px,4.5vw,30px)">Af Stanislav Kloski</div>', dur:3000 },
-  { h:'<div class="film-hoved">Spin &amp; Skandale</div><div class="film-sub">Krisemanageren</div>', dur:4200 }
+  { h:'<div class="film-sub" style="margin-top:0">KlosKlos og Reagan Production pr\u00e6senterer</div>', dur:4400 },
+  { h:'<div class="film-title">En Machiavelli Nixon produktion</div>', dur:4400 },
+  { h:'<div class="film-title" style="font-size:clamp(18px,4.5vw,30px)">Af Stanislav Kloski</div>', dur:4200 },
+  { h:'<div class="film-hoved">Spin &amp; Skandale</div><div class="film-sub">Krisemanageren</div>', dur:5600 }
 ];
 
 const STONE_FILM = [
@@ -775,6 +781,8 @@ function stoneInterlude(){
       </div>
     </div>`;
   document.getElementById('stone-accept').onclick = ()=>{
+    if(document.getElementById('stone-accept').disabled) return;
+    document.getElementById('stone-accept').disabled = true;
     stopAll();
     const lyd = document.getElementById('stone-lyd');
     if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
@@ -802,6 +810,8 @@ function interlude(){
       </div>
     </div>`;
   document.getElementById('accept').onclick = ()=>{
+    if(document.getElementById('accept').disabled) return;
+    document.getElementById('accept').disabled = true;
     stopAll();
     const ov = document.createElement('div');
     ov.className = 'film-overlay';
@@ -825,7 +835,7 @@ function interlude(){
       if(done) return;
       try { v.pause(); } catch(e){}
       stopLyd();
-      dwellTimer = setTimeout(go, 3000);
+      dwellTimer = setTimeout(go, 5000);
     }, { once:true });
     v.addEventListener('error', go, { once:true });
     ov.querySelector('#raad-skip').onclick = go;
@@ -835,14 +845,14 @@ function interlude(){
 }
 
 function ending(isPreview){
-  playTrack('ending');
+  if(!isPreview) playTrack('ending');
   const r = state.rigtige;
   const recIdx = (r >= 5) ? (10 - r) : 6;   // 10→Rasputin … 5→Judy Smith ; under 5 → Rossen
   const rec = LEGENDS[recIdx];
   const grid = state.history.map(h => h ? '🟩' : '🟥').join('');
   let rekord = 0;
   try { rekord = parseInt(localStorage.getItem('spin_rekord')||'0',10) || 0; } catch(e){}
-  const nyRekord = r > rekord;
+  const nyRekord = !isPreview && r > rekord;
   if(nyRekord){ rekord = r; try { localStorage.setItem('spin_rekord', String(r)); } catch(e){} }
   const farve  = (r >= 5) ? "var(--green)" : "var(--red)";
   const border = (r >= 5) ? "var(--green-dk)" : "var(--red-dk)";
@@ -898,13 +908,21 @@ function ending(isPreview){
         <div class="lsub">Jo flere sager du redder, jo højere i ligaen rækker du. Her er de andre, du kunne have imponeret, eller skuffet.</div>
         ${leagueRows}
       </div>
+      ${isPreview ? '<div class="pv-note">Du ser det andet mulige udfald. Dit rigtige resultat og din rekord er ur\u00f8rt.</div>' : ''}
       <div class="actions" style="justify-content:flex-start;margin-top:22px;flex-wrap:wrap;gap:10px"><button class="btn big" id="preview" style="background:#2e5a8c;border-color:#2e5a8c;color:#fff;font-weight:600">Se det andet mulige udfald ▸</button><button class="btn go big" id="again">Prøv igen ▸</button><button class="btn big" id="share" style="background:var(--gold);border-color:var(--gold);color:#1a1710;font-weight:600">Del resultat ▸</button></div>
     </div>`;
   window.scrollTo(0, 0);
   document.getElementById('again').onclick = startGame;
-  document.getElementById('preview').onclick = ()=> previewEnding(r >= 5 ? 4 : 7);
+  const pvBtn = document.getElementById('preview');
   const shareBtn = document.getElementById('share');
-  shareBtn.onclick = ()=>{ showShareMenu(r, rec.navn, grid); };
+  if(isPreview){
+    pvBtn.textContent = 'Tilbage til dit resultat \u25b8';
+    pvBtn.onclick = ()=> ending();
+    shareBtn.style.display = 'none';
+  } else {
+    pvBtn.onclick = ()=> previewEnding(r >= 5 ? 4 : 7);
+    shareBtn.onclick = ()=>{ showShareMenu(r, rec.navn, grid); };
+  }
 }
 
 document.addEventListener('keydown', e=>{
