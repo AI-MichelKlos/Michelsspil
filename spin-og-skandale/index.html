@@ -238,6 +238,7 @@
   <audio id="bgm-intro" src="intro.mp3" preload="auto"></audio>
   <audio id="bgm-ending" src="ending.mp3" preload="auto"></audio>
   <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="auto"></audio>
+  <audio id="stone-lyd" src="stone-lyd.mp3" preload="auto"></audio>
   <div class="footer">
     Satire · alle sager bygger på virkelige politiske skandaler<br>
     Spil og koncept · <span>Krisemanageren</span>
@@ -475,7 +476,21 @@ function playTrack(which){
   if(off){ off.pause(); off.currentTime = 0; }
   if(on){ on.play().catch(()=>{}); }
 }
-function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); const rl = document.getElementById('raad-lyd'); if(rl){ try { rl.pause(); } catch(e){} } }
+function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
+function fadeOutLyd(el, ms){
+  if(!el || el.paused) return;
+  const steps = 20;
+  const startVol = el.volume;
+  let n = 0;
+  const iv = setInterval(()=>{
+    n++;
+    try { el.volume = Math.max(0, startVol * (1 - n/steps)); } catch(e){}
+    if(n >= steps){
+      clearInterval(iv);
+      try { el.pause(); el.currentTime = 0; el.volume = startVol; } catch(e){}
+    }
+  }, ms/steps);
+}
 function toggleMusic(){
   musicOn = !musicOn;
   try { localStorage.setItem('spin_music', musicOn ? '1' : '0'); } catch(e){}
@@ -760,7 +775,13 @@ function stoneInterlude(){
       </div>
     </div>`;
   document.getElementById('stone-accept').onclick = ()=>{
-    playFilm(STONE_FILM, ()=>{ state.i++; showCase(); });
+    stopAll();
+    const lyd = document.getElementById('stone-lyd');
+    if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
+    playFilm(STONE_FILM, ()=>{
+      fadeOutLyd(lyd, 1800);
+      state.i++; showCase();
+    });
   };
 }
 
