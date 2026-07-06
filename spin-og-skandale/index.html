@@ -918,7 +918,12 @@ function ending(isPreview){
   if(isPreview){
     pvBtn.textContent = 'Tilbage til dit resultat \u25b8';
     pvBtn.onclick = ()=> ending();
-    shareBtn.style.display = 'none';
+    shareBtn.onclick = ()=>{
+      const realR = state.rigtige;
+      const realRec = LEGENDS[(realR >= 5) ? (10 - realR) : 6];
+      const realGrid = state.history.map(h => h ? '🟩' : '🟥').join('');
+      showShareMenu(realR, realRec.navn, realGrid);
+    };
   } else {
     pvBtn.onclick = ()=> previewEnding(r >= 5 ? 4 : 7);
     shareBtn.onclick = ()=>{ showShareMenu(r, rec.navn, grid); };
