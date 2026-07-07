@@ -837,31 +837,40 @@ function margreteInterlude(){
     stopAll();
     const lyd = document.getElementById('margrete-lyd');
     if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
+    // Biografen bygges nu, skjult under filmkortene, og videoen primes i samme tryk,
+    // saa den senere maa spille MED lyd (iOS kraever brugertryk til lyd)
+    const ov = document.createElement('div');
+    ov.className = 'film-overlay';
+    ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
+    document.body.appendChild(ov);
+    const v = ov.querySelector('#marg-video');
+    try {
+      v.volume = 0;
+      const p = v.play();
+      if(p && p.then) p.then(()=>{ v.pause(); try { v.currentTime = 0; } catch(e){} v.volume = 1; }).catch(()=>{ v.volume = 1; });
+    } catch(e){}
+    let done = false;
+    let dwellTimer = null;
+    const go = ()=>{
+      if(done) return; done = true;
+      if(dwellTimer) clearTimeout(dwellTimer);
+      try { v.pause(); } catch(e){}
+      fadeOutLyd(lyd, 400);
+      state.i++; showCase();
+      ov.classList.add('out');
+      setTimeout(()=>{ ov.remove(); }, 450);
+    };
+    v.addEventListener('ended', ()=>{
+      if(done) return;
+      try { v.pause(); } catch(e){}
+      dwellTimer = setTimeout(go, 3000);
+    }, { once:true });
+    v.addEventListener('error', go, { once:true });
+    ov.querySelector('#marg-skip').onclick = go;
     playFilm(MARGRETE_FILM, ()=>{
-      const ov = document.createElement('div');
-      ov.className = 'film-overlay';
-      ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" muted playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
-      document.body.appendChild(ov);
-      const v = ov.querySelector('#marg-video');
-      let done = false;
-      let dwellTimer = null;
-      const go = ()=>{
-        if(done) return; done = true;
-        if(dwellTimer) clearTimeout(dwellTimer);
-        try { v.pause(); } catch(e){}
-        fadeOutLyd(lyd, 1800);
-        state.i++; showCase();
-        ov.classList.add('out');
-        setTimeout(()=>{ ov.remove(); }, 450);
-      };
-      v.addEventListener('ended', ()=>{
-        if(done) return;
-        try { v.pause(); } catch(e){}
-        dwellTimer = setTimeout(go, 3000);
-      }, { once:true });
-      v.addEventListener('error', go, { once:true });
-      ov.querySelector('#marg-skip').onclick = go;
-      v.play().catch(()=>{});
+      fadeOutLyd(lyd, 900);
+      try { v.currentTime = 0; } catch(e){}
+      v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
     });
   };
 }
