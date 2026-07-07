@@ -810,7 +810,10 @@ function stoneInterlude(){
 const MARGRETE_FILM = [
   { h:'<div class="film-title">Kalmar</div><div class="film-sub">År 1402</div>', dur:2200 },
   { h:'<div class="film-title">Endnu et opkald</div><div class="film-sub">Denne gang fra fortiden</div>', dur:2200 },
-  { h:'<div class="film-title">En kvinde i en verden af mænd</div>', dur:2400 },
+  { h:'<div class="film-title">Gift bort som ti-årig</div><div class="film-sub">Til den norske konge Håkon 6.</div>', dur:2200 },
+  { h:'<div class="film-title">Fuldmægtig frue og husbond</div><div class="film-sub">Titlen var mandlig. Magten var hendes.</div>', dur:2400 },
+  { h:'<div class="film-rule" style="font-size:clamp(24px,7vw,42px)">"Kong Bukseløs"</div><div class="film-sub">Sådan hånede rivalen Albrekt hende</div>', dur:2200 },
+  { h:'<div class="film-title">Hun fangede ham.</div><div class="film-sub">Holdt ham som fange i seks år.</div>', dur:2400 },
   { h:'<div class="film-title">Fjenderne hånede hende. Så besejrede hun dem.</div>', dur:2600 },
   { h:'<img class="film-pic" src="images/margrete.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Margrete 1.</div><div class="film-sub">Regent af Danmark, Norge og Sverige. Kalmarunionens arkitekt.</div>', dur:4200 }
 ];
@@ -836,7 +839,7 @@ function margreteInterlude(){
     document.getElementById('marg-accept').disabled = true;
     stopAll();
     const lyd = document.getElementById('margrete-lyd');
-    if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
+    if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(e=> console.warn('margrete-lyd kunne ikke afspilles, tjek at filen margrete-lyd.mp3 er lagt op:', e)); } catch(e){} }
     // Biografen bygges nu, skjult under filmkortene, og videoen primes i samme tryk,
     // saa den senere maa spille MED lyd (iOS kraever brugertryk til lyd)
     const ov = document.createElement('div');
