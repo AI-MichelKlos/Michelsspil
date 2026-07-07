@@ -851,9 +851,13 @@ function margreteInterlude(){
     } catch(e){}
     let done = false;
     let dwellTimer = null;
+    // Musikken fader ud i sekvensens sidste mørke sekund, faerdig naar videoen starter
+    const FILM_MS = 2000 + MARGRETE_FILM.reduce((s,c)=> s + c.dur + 1000, 0);
+    const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 1300); }, FILM_MS - 1400);
     const go = ()=>{
       if(done) return; done = true;
       if(dwellTimer) clearTimeout(dwellTimer);
+      clearTimeout(fadeTimer);
       try { v.pause(); } catch(e){}
       fadeOutLyd(lyd, 400);
       state.i++; showCase();
@@ -868,7 +872,7 @@ function margreteInterlude(){
     v.addEventListener('error', go, { once:true });
     ov.querySelector('#marg-skip').onclick = go;
     playFilm(MARGRETE_FILM, ()=>{
-      fadeOutLyd(lyd, 900);
+      fadeOutLyd(lyd, 300);
       try { v.currentTime = 0; } catch(e){}
       v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
     });
