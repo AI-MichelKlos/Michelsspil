@@ -840,7 +840,7 @@ function margreteInterlude(){
     playFilm(MARGRETE_FILM, ()=>{
       const ov = document.createElement('div');
       ov.className = 'film-overlay';
-      ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.MP4" muted playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
+      ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" muted playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
       document.body.appendChild(ov);
       const v = ov.querySelector('#marg-video');
       let done = false;
