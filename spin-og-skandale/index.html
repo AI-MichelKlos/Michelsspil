@@ -242,6 +242,7 @@
   <audio id="bgm-ending" src="ending.mp3" preload="none"></audio>
   <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="none"></audio>
   <audio id="stone-lyd" src="stone-lyd.mp3" preload="none"></audio>
+  <audio id="margrete-lyd" src="margrete-lyd.mp3" preload="none"></audio>
   <div class="footer">
     Udviklet af <span>KlosKlos og Reagan Production</span>
   </div>
@@ -413,7 +414,17 @@ const LEVELS = [
       {t:"Han flygtede til udlandet og blev aldrig stillet for en dommer.", ok:false},
       {t:"Han blev frikendt, fordi ingen af de centrale vidner turde stå frem i retten.", ok:false}
     ],
-    forklaring:"Tanaka blev anholdt i 1976 og dømt i 1983 for at have modtaget et millionbeløb, men han nægtede sig skyldig, appellerede og beholdt sin plads i parlamentet. Fra kulissen styrede han fortsat den største fraktion i regeringspartiet og var i årevis den reelle kongemager i japansk politik med tilnavnet skyggeshogunen. Først et slagtilfælde i 1985 brød hans magt, og han døde i 1993, inden appelsagen var endeligt afgjort. Sagen viste, at en dom ikke nødvendigvis er enden på magten, hvis netværket består." }
+    forklaring:"Tanaka blev anholdt i 1976 og dømt i 1983 for at have modtaget et millionbeløb, men han nægtede sig skyldig, appellerede og beholdt sin plads i parlamentet. Fra kulissen styrede han fortsat den største fraktion i regeringspartiet og var i årevis den reelle kongemager i japansk politik med tilnavnet skyggeshogunen. Først et slagtilfælde i 1985 brød hans magt, og han døde i 1993, inden appelsagen var endeligt afgjort. Sagen viste, at en dom ikke nødvendigvis er enden på magten, hvis netværket består." },
+
+  { sag:"17", titel:"Den falske Oluf", based:"Danmark · Margrete 1. · 1402",
+    situation:"Femten år efter den unge konges pludselige død dukker en mand op i Preussen og hævder at være ham. Købmænd synes, han ligner, og folk begynder at ære ham som konge. Rygtet spreder sig: har rigets mægtigste kvinde bygget hele sin magt på en løgn, og forsøgte hun i sin tid at forgifte sin egen søn?",
+    spm:"Hvordan håndterede Margrete 1. manden, der påstod at være hendes genopstandne søn?",
+    svar:[
+      {t:"Hun fik ham udleveret, mindede omverdenen om at sønnens lig var blevet fremvist offentligt, og lod ham brænde som kætter.", ok:true},
+      {t:"Hun ignorerede ham og lod rygtet dø ud af sig selv, hvilket tog flere år.", ok:false},
+      {t:"Hun lod ham afhøre i Kalmar og betalte ham derefter for at forsvinde tilbage til Preussen.", ok:false}
+    ],
+    forklaring:"Margretes kreds svarede med middelalderens udgave af en pressemeddelelse: et brev til Den Tyske Ordens højmester, der kaldte manden bedrager og opregnede navngivne vidner på den rigtige Olufs død i 1387, helt ned til at liget var balsameret og fremvist med utildækket ansigt. Manden blev udleveret, ført til Skåne og brændt på bålet. Rygtet om at Margrete skulle have forgiftet sin søn var og blev et rygte, kilderne dokumenterer det ikke. Grebene, dokumentér, afvis, straf, viser at krisestyring er ældre end både pressen og spindoktorerne." }
 ];
 
 const SLOTS = ["A","B","C"];
@@ -453,7 +464,8 @@ const CITATER = {
   "13":{ t:"Sollys siges at være det bedste af alle desinfektionsmidler.", k:"Louis Brandeis" },
   "14":{ t:"Problemet med løgn og bedrag er, at deres virkning helt afhænger af en klar forestilling om den sandhed, der skal skjules.", k:"Hannah Arendt" },
   "15":{ t:"Jo større magten er, desto farligere er misbruget.", k:"Edmund Burke" },
-  "16":{ t:"Den ædle forstår, hvad der er ret; den ringe forstår, hvad der gavner ham selv.", k:"Konfutse" }
+  "16":{ t:"Den ædle forstår, hvad der er ret; den ringe forstår, hvad der gavner ham selv.", k:"Konfutse" },
+  "17":{ t:"Ry for magt er i sig selv magt.", k:"Thomas Hobbes" }
 };
 
 const PORTRAITS = {
@@ -461,7 +473,7 @@ const PORTRAITS = {
   "04":"profumo.jpg", "05":"johnson.jpg", "06":"cahuzac.jpg",
   "07":"wulff.jpg", "08":"guttenberg.jpg", "09":"ford.jpg", "10":"zuma.jpg",
   "11":"schlueter.jpg", "12":"strache.jpg", "13":"gunnlaugsson.jpg",
-  "14":"reagan.jpg", "15":"craxi.jpg", "16":"tanaka.jpg"
+  "14":"reagan.jpg", "15":"craxi.jpg", "16":"tanaka.jpg", "17":"margrete.jpg"
 };
 
 let state = { i:0, history:[], rigtige:0, slots:{}, started:false };
@@ -478,7 +490,7 @@ function playTrack(which){
   if(off){ off.pause(); off.currentTime = 0; }
   if(on){ on.play().catch(()=>{}); }
 }
-function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
+function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd','margrete-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
 function fadeOutLyd(el, ms){
   if(!el || el.paused) return;
   const steps = 20;
@@ -567,7 +579,7 @@ function intro(){
 function startGame(){
   stopAll();
   updateMusicBtn();
-  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, deck:shuffle([...Array(LEVELS.length).keys()]).slice(0, RUNDE) };
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, deck:(function(){ const M = LEVELS.findIndex(l=>l.sag==='17'); const rest = shuffle([...Array(LEVELS.length).keys()].filter(x=>x!==M)); return rest.slice(0,8).concat([M], rest.slice(8,9)); })() };
   recordEl.style.display = 'flex';
   renderRecord();
   if(!creditsShown){
@@ -653,8 +665,10 @@ function choose(slot){
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
     if(state.i === 4 && !state.interludeDone){
       document.getElementById('next').onclick = ()=>{ state.interludeDone = true; interlude(); };
-    } else if(state.i === 7 && !state.stoneDone){
+    } else if(state.i === 6 && !state.stoneDone){
       document.getElementById('next').onclick = ()=>{ state.stoneDone = true; stoneInterlude(); };
+    } else if(state.i === 7 && !state.margreteDone){
+      document.getElementById('next').onclick = ()=>{ state.margreteDone = true; margreteInterlude(); };
     } else {
       document.getElementById('next').onclick = ()=>{ state.i++; showCase(); };
     }
@@ -771,7 +785,7 @@ function stoneInterlude(){
     <div class="panel fade">
       <div class="card">
         <div class="stamp">Fortroligt</div>
-        <div class="meta">Otte sager klaret // to tilbage</div>
+        <div class="meta">Syv sager klaret // tre tilbage</div>
         <div class="country">Washington D.C., nutiden</div>
         <h2 class="case-title">Et opkald fra den m\u00f8rke side</h2>
         <p class="situation">Machiavelli hviskede dig noget i \u00f8ret ved halvvejen. Nu ringer telefonen igen. Denne gang er det ingen filosof. Det er en mand med Nixon tatoveret p\u00e5 ryggen, branchens mest berygtede overlever, selverkl\u00e6ret dirty trickster gennem et halvt \u00e5rhundrede. Han har sine regler med til dig, og han insisterer p\u00e5, at de aldrig har fejlet. Vil du h\u00f8re dem?</p>
@@ -789,6 +803,65 @@ function stoneInterlude(){
     playFilm(STONE_FILM, ()=>{
       fadeOutLyd(lyd, 1800);
       state.i++; showCase();
+    });
+  };
+}
+
+const MARGRETE_FILM = [
+  { h:'<div class="film-title">Kalmar</div><div class="film-sub">År 1402</div>', dur:2200 },
+  { h:'<div class="film-title">Endnu et opkald</div><div class="film-sub">Denne gang fra fortiden</div>', dur:2200 },
+  { h:'<div class="film-title">En kvinde i en verden af mænd</div>', dur:2400 },
+  { h:'<div class="film-title">Fjenderne hånede hende. Så besejrede hun dem.</div>', dur:2600 },
+  { h:'<img class="film-pic" src="images/margrete.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Margrete 1.</div><div class="film-sub">Regent af Danmark, Norge og Sverige. Kalmarunionens arkitekt.</div>', dur:4200 }
+];
+
+function margreteInterlude(){
+  caseCount.textContent = 'FJERDE AKT';
+  window.scrollTo(0, 0);
+  app.innerHTML = `
+    <div class="panel fade">
+      <div class="card">
+        <div class="stamp">Fortroligt</div>
+        <div class="meta">Otte sager klaret // to tilbage</div>
+        <div class="country">Kalmar, år 1402</div>
+        <h2 class="case-title">Et opkald fra fortiden</h2>
+        <p class="situation">Telefonen ringer igen. Stemmen er rolig, vant til at blive adlydt, og meget gammel. Hun regerede tre riger i en tid, hvor kvinder officielt ikke kunne regere noget som helst, og hun holdt dem samlet med pergament, alliancer og jernvilje. Nu har hun et råd om magt til dig. Og en advarsel: den næste sag i bunken er hendes egen. Vil du tage imod?</p>
+        <div style="margin-top:18px">
+          <button class="btn go big" id="marg-accept">Tag imod ▸</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('marg-accept').onclick = ()=>{
+    if(document.getElementById('marg-accept').disabled) return;
+    document.getElementById('marg-accept').disabled = true;
+    stopAll();
+    const lyd = document.getElementById('margrete-lyd');
+    if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
+    playFilm(MARGRETE_FILM, ()=>{
+      const ov = document.createElement('div');
+      ov.className = 'film-overlay';
+      ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.MP4" muted playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
+      document.body.appendChild(ov);
+      const v = ov.querySelector('#marg-video');
+      let done = false;
+      let dwellTimer = null;
+      const go = ()=>{
+        if(done) return; done = true;
+        if(dwellTimer) clearTimeout(dwellTimer);
+        try { v.pause(); } catch(e){}
+        fadeOutLyd(lyd, 1800);
+        state.i++; showCase();
+        ov.classList.add('out');
+        setTimeout(()=>{ ov.remove(); }, 450);
+      };
+      v.addEventListener('ended', ()=>{
+        if(done) return;
+        try { v.pause(); } catch(e){}
+        dwellTimer = setTimeout(go, 3000);
+      }, { once:true });
+      v.addEventListener('error', go, { once:true });
+      ov.querySelector('#marg-skip').onclick = go;
+      v.play().catch(()=>{});
     });
   };
 }
