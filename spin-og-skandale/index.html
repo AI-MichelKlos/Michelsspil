@@ -193,11 +193,15 @@
   .gate-btn{background:transparent;border:2px solid var(--gold);color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:16px;padding:14px 32px;border-radius:6px;cursor:pointer;transition:background .2s}
   .gate-btn:hover{background:rgba(201,162,75,.12)}
   .gate .ghint{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:#8a8577}
+  .film-overlay.brun{background:#2b1d12}
+  .film-strip-img{display:block;max-width:min(100%,760px);max-height:88vh;width:auto;border:4px solid #d9c7a3;box-shadow:0 6px 30px rgba(0,0,0,.6);border-radius:4px}
   .film-overlay{position:fixed;inset:0;background:#000;z-index:9998;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .45s ease}
   .film-overlay.out{opacity:0}
   .film-card{opacity:0;transition:opacity .6s ease;text-align:center;padding:0 26px;max-width:640px}
   .film-card.vis{opacity:1}
   .film-title{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:4px;font-size:clamp(22px,6vw,40px);color:#f2ede2}
+  .film-title.sepia{color:#e8d5b0}
+  .film-sub.sepia{color:#b09a72}
   .film-rule{font-family:'Permanent Marker',cursive;font-size:clamp(32px,9vw,58px);color:var(--red);transform:rotate(-2deg)}
   .film-sub{font-family:'Space Mono',monospace;font-size:13px;color:#8a8577;margin-top:14px;letter-spacing:1px}
   .film-hoved{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:6px;font-weight:600;font-size:clamp(30px,9vw,58px);color:var(--gold);text-shadow:0 0 30px rgba(201,162,75,.35)}
@@ -243,6 +247,7 @@
   <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="none"></audio>
   <audio id="stone-lyd" src="stone-lyd.mp3" preload="none"></audio>
   <audio id="margrete-lyd" src="margrete-lyd.mp3" preload="none"></audio>
+  <audio id="watergate-lyd" src="watergate-lyd.mp3" preload="none"></audio>
   <div class="footer">
     Udviklet af <span>KlosKlos og Reagan Production</span>
   </div>
@@ -419,7 +424,7 @@ function playTrack(which){
   if(off){ off.pause(); off.currentTime = 0; }
   if(on){ on.play().catch(()=>{}); }
 }
-function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd','margrete-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
+function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd','margrete-lyd','watergate-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
 function fadeOutLyd(el, ms){
   if(!el || el.paused) return;
   const steps = 20;
@@ -508,7 +513,7 @@ function intro(){
 function startGame(){
   stopAll();
   updateMusicBtn();
-  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, watergateDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
   recordEl.style.display = 'flex';
   renderRecord();
   if(!creditsShown){
@@ -592,7 +597,9 @@ function choose(slot){
     document.getElementById('next').onclick = ()=> ending();
   } else {
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
-    if(state.i === 4 && !state.interludeDone){
+    if(state.i === 0 && !state.watergateDone){
+      document.getElementById('next').onclick = ()=>{ state.watergateDone = true; watergateInterlude(); };
+    } else if(state.i === 4 && !state.interludeDone){
       document.getElementById('next').onclick = ()=>{ state.interludeDone = true; interlude(); };
     } else if(state.i === 6 && !state.stoneDone){
       document.getElementById('next').onclick = ()=>{ state.stoneDone = true; stoneInterlude(); };
@@ -681,9 +688,10 @@ const STONE_FILM = [
   { h:'<img class="film-pic" src="images/stone.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Roger Stone</div><div class="film-sub">Politisk konsulent gennem 50 \u00e5r. R\u00e5dgiver for Nixon, Reagan og Trump.</div>', dur:4600 }
 ];
 
-function playFilm(cards, onDone){
+function playFilm(cards, onDone, opts){
+  opts = opts || {};
   const ov = document.createElement('div');
-  ov.className = 'film-overlay';
+  ov.className = 'film-overlay' + (opts.brun ? ' brun' : '');
   ov.innerHTML = '<div class="film-card" id="film-card"></div><button class="film-skip" id="film-skip">Spring over \u25b8\u25b8</button>';
   document.body.appendChild(ov);
   const cardEl = ov.querySelector('#film-card');
@@ -790,6 +798,26 @@ function margreteInterlude(){
       v.play().catch(()=>{});
     });
   };
+}
+
+const WATERGATE_FILM = [
+  { h:'<div class="film-title sepia">1972</div><div class="film-sub sepia">Washington D.C.</div>', dur:2600 },
+  { h:'<div class="film-title sepia">Richard Nixon er praesident</div>', dur:2600 },
+  { h:'<div class="film-title sepia">Natten til 17. juni</div><div class="film-sub sepia">Fem maend, praesidentens egne, lister sig ind</div>', dur:2800 },
+  { h:'<img class="film-strip-img" src="images/watergate1.jpg" alt="Watergate-bygningen" onerror="this.style.display=\'none\'">', dur:3000 },
+  { h:'<img class="film-strip-img" src="images/watergate2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
+  { h:'<img class="film-strip-img" src="images/watergate3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
+  { h:'<img class="film-strip-img" src="images/watergate4.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
+  { h:'<img class="film-strip-img" src="images/watergate5.jpg" alt="The White House Plumbers" onerror="this.style.display=\'none\'">', dur:3600 }
+];
+
+function watergateInterlude(){
+  const lyd = document.getElementById('watergate-lyd');
+  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(e=> console.warn('watergate-lyd kunne ikke afspilles, tjek watergate-lyd.mp3:', e)); } catch(e){} }
+  playFilm(WATERGATE_FILM, ()=>{
+    fadeOutLyd(lyd, 1500);
+    state.i++; showCase();
+  }, { brun:true });
 }
 
 function interlude(){
