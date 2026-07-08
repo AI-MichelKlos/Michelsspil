@@ -709,8 +709,10 @@ function playFilm(cards, onDone, opts){
   cards.forEach(c=>{
     timers.push(setTimeout(()=>{ cardEl.innerHTML = c.h; cardEl.classList.add('vis'); }, t));
     t += c.dur;
-    timers.push(setTimeout(()=>{ cardEl.classList.remove('vis'); }, t));
-    t += 1000;
+    if(!c.cut){
+      timers.push(setTimeout(()=>{ cardEl.classList.remove('vis'); }, t));
+      t += 1000;
+    }
   });
   timers.push(setTimeout(finish, t));
 }
@@ -804,18 +806,22 @@ const WATERGATE_FILM = [
   { h:'<div class="film-title sepia">1972</div><div class="film-sub sepia">Washington D.C.</div>', dur:2600 },
   { h:'<div class="film-title sepia">Richard Nixon er praesident</div>', dur:2600 },
   { h:'<div class="film-title sepia">Natten til 17. juni</div><div class="film-sub sepia">Fem maend, praesidentens egne, lister sig ind</div>', dur:2800 },
-  { h:'<img class="film-strip-img" src="images/watergate1.jpg" alt="Watergate-bygningen" onerror="this.style.display=\'none\'">', dur:3000 },
-  { h:'<img class="film-strip-img" src="images/watergate2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
-  { h:'<img class="film-strip-img" src="images/watergate3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
-  { h:'<img class="film-strip-img" src="images/watergate4.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 },
-  { h:'<img class="film-strip-img" src="images/watergate5.jpg" alt="The White House Plumbers" onerror="this.style.display=\'none\'">', dur:3600 }
+  { h:'<img class="film-strip-img" src="images/watergate1.jpg" alt="Watergate-bygningen" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/watergate2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/watergate3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/watergate4.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/watergate5.jpg" alt="The White House Plumbers" onerror="this.style.display=\'none\'">', dur:4800 }
 ];
 
 function watergateInterlude(){
   const lyd = document.getElementById('watergate-lyd');
-  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(e=> console.warn('watergate-lyd kunne ikke afspilles, tjek watergate-lyd.mp3:', e)); } catch(e){} }
+  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 0.6; lyd.play().catch(e=> console.warn('watergate-lyd kunne ikke afspilles, tjek watergate-lyd.mp3:', e)); } catch(e){} }
+  // Lang, blid udtoning: starter under sidste stribebillede og er faerdig ved aktens slutning
+  const FILM_MS = WATERGATE_FILM.reduce((s,c)=> s + c.dur + (c.cut ? 0 : 1000), 2000);
+  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 4500); }, FILM_MS - 4700);
   playFilm(WATERGATE_FILM, ()=>{
-    fadeOutLyd(lyd, 1500);
+    clearTimeout(fadeTimer);
+    fadeOutLyd(lyd, 800);
     state.i++; showCase();
   }, { brun:true });
 }
