@@ -8,7 +8,7 @@
 <meta property="og:title" content="Spin &amp; Skandale: Krisemanageren">
 <meta property="og:description" content="10 politiske skandaler, 10 valg. Kan du spinne dig ud af krisen og lande drømmejobbet? Test dig selv som praktikant i spinbureauet.">
 <meta property="og:url" content="https://ai-michelklos.github.io/Michelsspil/spin-og-skandale/">
-<meta property="og:image" content="https://ai-michelklos.github.io/Michelsspil/spin-og-skandale/images/nixon.jpg">
+<meta property="og:image" content="https://ai-michelklos.github.io/Michelsspil/spin-og-skandale/images/kontaktark.png">
 <meta property="og:locale" content="da_DK">
 <meta name="twitter:card" content="summary">
 <meta name="description" content="10 politiske skandaler, 10 valg. Kan du spinne dig ud af krisen og lande drømmejobbet?">
@@ -750,6 +750,9 @@ const MARGRETE_FILM = [
 function margreteInterlude(){
   caseCount.textContent = 'FJERDE AKT';
   window.scrollTo(0, 0);
+  stopAll();
+  const lyd = document.getElementById('margrete-lyd');
+  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
   app.innerHTML = `
     <div class="panel fade">
       <div class="card">
@@ -766,8 +769,8 @@ function margreteInterlude(){
   document.getElementById('marg-accept').onclick = ()=>{
     if(document.getElementById('marg-accept').disabled) return;
     document.getElementById('marg-accept').disabled = true;
-    stopAll();
     playFilm(MARGRETE_FILM, ()=>{
+      fadeOutLyd(lyd, 1200);
       const ov = document.createElement('div');
       ov.className = 'film-overlay';
       ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
@@ -790,7 +793,7 @@ function margreteInterlude(){
       }, { once:true });
       v.addEventListener('error', go, { once:true });
       ov.querySelector('#marg-skip').onclick = go;
-      v.play().catch(()=>{});
+      setTimeout(()=>{ if(!done) v.play().catch(()=>{}); }, 1000);
     });
   };
 }
