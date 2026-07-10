@@ -773,10 +773,12 @@ function margreteInterlude(){
     v.id = 'marg-video'; v.className = 'film-video';
     v.src = 'margrete.mp4'; v.preload = 'auto';
     v.playsInline = true; v.setAttribute('playsinline','');
+    const resumeLyd = ()=>{ if(musicOn){ try { lyd.play().catch(()=>{}); } catch(e){} } };
     try {
       const pr = v.play();
-      if(pr && pr.then){ pr.then(()=>{ try { v.pause(); v.currentTime = 0; } catch(e){} }).catch(()=>{}); }
-    } catch(e){}
+      if(pr && pr.then){ pr.then(()=>{ try { v.pause(); v.currentTime = 0; } catch(e){} resumeLyd(); }).catch(resumeLyd); }
+      else { try { v.pause(); v.currentTime = 0; } catch(e){} resumeLyd(); }
+    } catch(e){ resumeLyd(); }
     playFilm(MARGRETE_FILM, ()=>{
       fadeOutLyd(lyd, 1200);
       const ov = document.createElement('div');
