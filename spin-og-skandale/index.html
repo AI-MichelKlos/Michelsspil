@@ -769,13 +769,21 @@ function margreteInterlude(){
   document.getElementById('marg-accept').onclick = ()=>{
     if(document.getElementById('marg-accept').disabled) return;
     document.getElementById('marg-accept').disabled = true;
+    const v = document.createElement('video');
+    v.id = 'marg-video'; v.className = 'film-video';
+    v.src = 'margrete.mp4'; v.preload = 'auto';
+    v.playsInline = true; v.setAttribute('playsinline','');
+    try {
+      const pr = v.play();
+      if(pr && pr.then){ pr.then(()=>{ try { v.pause(); v.currentTime = 0; } catch(e){} }).catch(()=>{}); }
+    } catch(e){}
     playFilm(MARGRETE_FILM, ()=>{
       fadeOutLyd(lyd, 1200);
       const ov = document.createElement('div');
       ov.className = 'film-overlay';
-      ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
+      ov.innerHTML = '<button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
+      ov.insertBefore(v, ov.firstChild);
       document.body.appendChild(ov);
-      const v = ov.querySelector('#marg-video');
       let done = false;
       let dwellTimer = null;
       const go = ()=>{
@@ -793,7 +801,21 @@ function margreteInterlude(){
       }, { once:true });
       v.addEventListener('error', go, { once:true });
       ov.querySelector('#marg-skip').onclick = go;
-      setTimeout(()=>{ if(!done) v.play().catch(()=>{}); }, 1000);
+      const startVideo = ()=>{
+        if(done) return;
+        try { v.currentTime = 0; } catch(e){}
+        const pr = v.play();
+        if(pr && pr.catch){ pr.catch(()=>{
+          if(done) return;
+          const btn = document.createElement('button');
+          btn.className = 'btn go big';
+          btn.textContent = '▶ Afspil';
+          btn.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5';
+          btn.onclick = ()=>{ btn.remove(); try { v.currentTime = 0; } catch(e){} v.play().catch(()=>{}); };
+          ov.appendChild(btn);
+        }); }
+      };
+      setTimeout(startVideo, 1000);
     });
   };
 }
