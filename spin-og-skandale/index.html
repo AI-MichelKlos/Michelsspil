@@ -740,11 +740,13 @@ function stoneInterlude(){
 }
 
 const MARGRETE_FILM = [
-  { h:'<div class="film-title">Kalmar</div><div class="film-sub">År 1402</div>', dur:2200 },
-  { h:'<div class="film-title">Endnu et opkald</div><div class="film-sub">Denne gang fra fortiden</div>', dur:2200 },
-  { h:'<div class="film-title">En kvinde i en verden af mænd</div>', dur:2400 },
-  { h:'<div class="film-title">Fjenderne hånede hende. Så besejrede hun dem.</div>', dur:2600 },
-  { h:'<img class="film-pic" src="images/margrete.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Margrete 1.</div><div class="film-sub">Regent af Danmark, Norge og Sverige. Kalmarunionens arkitekt.</div>', dur:4200 }
+  { h:'<img class="film-pic" src="images/margrete.jpg" alt="" onerror="this.style.display=\'none\'"><div class="film-title">Margrete 1.</div><div class="film-sub">Valdemar Atterdags datter. Født 1353.</div>', dur:2600 },
+  { h:'<div class="film-title">Gift som tiårig med Norges kong Håkon</div><div class="film-sub">Magt var aldrig noget hun fik. Det var noget hun tog.</div>', dur:2800 },
+  { h:'<div class="film-title">1376: Hendes søn Oluf bliver Danmarks konge</div><div class="film-sub">Han er fem år gammel. Hun regerer.</div>', dur:2800 },
+  { h:'<div class="film-title">1387: Oluf dør pludseligt, kun 16 år gammel</div><div class="film-sub">Riget står uden konge. Hun står uden søn.</div>', dur:2800 },
+  { h:'<div class="film-title">Danmark og Norge vælger hende alligevel</div><div class="film-sub">Fuldmægtig frue og husbond. En kvinde med kongemagt.</div>', dur:3000 },
+  { h:'<div class="film-title">Fjenden hånede hende som Kong Bukseløs</div><div class="film-sub">Hun tog hans krone. Sverige faldt i 1389.</div>', dur:3000 },
+  { h:'<div class="film-title">1397: Kalmarunionen. Tre riger, én regent.</div><div class="film-sub">Men i 1402 banker fortiden på. En mand står frem og påstår at være Oluf, genopstanden fra de døde.</div>', dur:3500 }
 ];
 
 function margreteInterlude(){
@@ -752,73 +754,65 @@ function margreteInterlude(){
   window.scrollTo(0, 0);
   stopAll();
   const lyd = document.getElementById('margrete-lyd');
-  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
   app.innerHTML = `
     <div class="panel fade">
       <div class="card">
         <div class="stamp">Fortroligt</div>
         <div class="meta">Otte sager klaret // to tilbage</div>
-        <div class="country">Kalmar, år 1402</div>
-        <h2 class="case-title">Et opkald fra fortiden</h2>
-        <p class="situation">Telefonen ringer igen. Stemmen er rolig, vant til at blive adlydt, og meget gammel. Hun regerede tre riger i en tid, hvor kvinder officielt ikke kunne regere noget som helst, og hun holdt dem samlet med pergament, alliancer og jernvilje. Nu har hun et råd om magt til dig. Og en advarsel: den næste sag i bunken er hendes egen. Vil du tage imod?</p>
+        <div class="country">Et sted i fortiden</div>
+        <h2 class="case-title">Et klip fra fortiden</h2>
+        <p class="situation">Inden den n\u00e6ste sag skal du se et kort klip fra fortiden. Det handler om en st\u00e6rk kvinde, der regerede tre riger i en tid, hvor kvinder officielt ikke kunne regere noget som helst. Hun har noget at vise dig. Er du klar?</p>
         <div style="margin-top:18px">
-          <button class="btn go big" id="marg-accept">Tag imod ▸</button>
+          <button class="btn go big" id="marg-accept">Se klippet \u25b8</button>
         </div>
       </div>
     </div>`;
   document.getElementById('marg-accept').onclick = ()=>{
     if(document.getElementById('marg-accept').disabled) return;
     document.getElementById('marg-accept').disabled = true;
-    const v = document.createElement('video');
-    v.id = 'marg-video'; v.className = 'film-video';
-    v.src = 'margrete.mp4'; v.preload = 'auto';
-    v.playsInline = true; v.setAttribute('playsinline','');
-    const resumeLyd = ()=>{ if(musicOn){ try { lyd.play().catch(()=>{}); } catch(e){} } };
+    // Prim musikken i selve klikket, saa den maa spille efter videoen
     try {
-      const pr = v.play();
-      if(pr && pr.then){ pr.then(()=>{ try { v.pause(); v.currentTime = 0; } catch(e){} resumeLyd(); }).catch(resumeLyd); }
-      else { try { v.pause(); v.currentTime = 0; } catch(e){} resumeLyd(); }
-    } catch(e){ resumeLyd(); }
-    playFilm(MARGRETE_FILM, ()=>{
-      fadeOutLyd(lyd, 1200);
-      const ov = document.createElement('div');
-      ov.className = 'film-overlay';
-      ov.innerHTML = '<button class="film-skip" id="marg-skip">Spring over ▸▸</button>';
-      ov.insertBefore(v, ov.firstChild);
-      document.body.appendChild(ov);
-      let done = false;
-      let dwellTimer = null;
-      const go = ()=>{
-        if(done) return; done = true;
-        if(dwellTimer) clearTimeout(dwellTimer);
-        try { v.pause(); } catch(e){}
+      const lp = lyd.play();
+      if(lp && lp.then){ lp.then(()=>{ try { lyd.pause(); lyd.currentTime = 0; } catch(e){} }).catch(()=>{}); }
+    } catch(e){}
+    // Videoen afspilles direkte i klikket, med lyd
+    const ov = document.createElement('div');
+    ov.className = 'film-overlay';
+    ov.innerHTML = '<video id="marg-video" class="film-video" src="margrete.mp4" playsinline preload="auto"></video><button class="film-skip" id="marg-skip">Spring over \u25b8\u25b8</button>';
+    document.body.appendChild(ov);
+    const v = ov.querySelector('#marg-video');
+    let done = false;
+    let dwellTimer = null;
+    const go = ()=>{
+      if(done) return; done = true;
+      if(dwellTimer) clearTimeout(dwellTimer);
+      try { v.pause(); } catch(e){}
+      ov.classList.add('out');
+      setTimeout(()=>{ ov.remove(); }, 450);
+      // Historiske sider med musik under
+      if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(()=>{}); } catch(e){} }
+      playFilm(MARGRETE_FILM, ()=>{
+        fadeOutLyd(lyd, 1200);
         state.i++; showCase();
-        ov.classList.add('out');
-        setTimeout(()=>{ ov.remove(); }, 450);
-      };
-      v.addEventListener('ended', ()=>{
-        if(done) return;
-        try { v.pause(); } catch(e){}
-        dwellTimer = setTimeout(go, 3000);
-      }, { once:true });
-      v.addEventListener('error', go, { once:true });
-      ov.querySelector('#marg-skip').onclick = go;
-      const startVideo = ()=>{
-        if(done) return;
-        try { v.currentTime = 0; } catch(e){}
-        const pr = v.play();
-        if(pr && pr.catch){ pr.catch(()=>{
-          if(done) return;
-          const btn = document.createElement('button');
-          btn.className = 'btn go big';
-          btn.textContent = '▶ Afspil';
-          btn.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5';
-          btn.onclick = ()=>{ btn.remove(); try { v.currentTime = 0; } catch(e){} v.play().catch(()=>{}); };
-          ov.appendChild(btn);
-        }); }
-      };
-      setTimeout(startVideo, 1000);
-    });
+      });
+    };
+    v.addEventListener('ended', ()=>{
+      if(done) return;
+      try { v.pause(); } catch(e){}
+      dwellTimer = setTimeout(go, 1200);
+    }, { once:true });
+    v.addEventListener('error', go, { once:true });
+    ov.querySelector('#marg-skip').onclick = go;
+    const pr = v.play();
+    if(pr && pr.catch){ pr.catch(()=>{
+      if(done) return;
+      const btn = document.createElement('button');
+      btn.className = 'btn go big';
+      btn.textContent = '\u25b6 Afspil';
+      btn.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5';
+      btn.onclick = ()=>{ btn.remove(); try { v.currentTime = 0; } catch(e){} v.play().catch(()=>{}); };
+      ov.appendChild(btn);
+    }); }
   };
 }
 
