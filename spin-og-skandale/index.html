@@ -513,6 +513,7 @@ function intro(){
 function startGame(){
   stopAll();
   ['images/w1.jpg','images/w2.jpg','images/w3.jpg'].forEach(s=>{ try { const im = new Image(); im.src = s; } catch(e){} });
+  try { const wm = document.getElementById('wmusik'); if(wm){ wm.preload = 'auto'; wm.load(); } } catch(e){}
   updateMusicBtn();
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, watergateDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
   recordEl.style.display = 'flex';
@@ -599,7 +600,7 @@ function choose(slot){
   } else {
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
     if(state.i === 0 && !state.watergateDone){
-      document.getElementById('next').onclick = ()=>{ state.watergateDone = true; watergateInterlude(); };
+      document.getElementById('next').onclick = ()=>{ if(state.watergateDone) return; state.watergateDone = true; watergateInterlude(); };
     } else if(state.i === 4 && !state.interludeDone){
       document.getElementById('next').onclick = ()=>{ state.interludeDone = true; interlude(); };
     } else if(state.i === 6 && !state.stoneDone){
@@ -835,17 +836,24 @@ const WATERGATE_FILM = [
 
 function watergateInterlude(){
   const lyd = document.getElementById('wmusik');
-  // Prime lyden i selve klik-handleren, saa iOS tillader at den starter senere
+  let musikStartet = false;
+  // Prime lyden i selve klik-handleren, saa iOS tillader at den starter senere.
+  // Callback'et maa IKKE roere musikken, hvis den rigtige afspilning allerede er i gang,
+  // ellers spoles der tilbage og det lyder som om nummeret starter forfra.
   if(musicOn){
     try {
       lyd.muted = true;
       const p = lyd.play();
-      if(p && p.then) p.then(()=>{ lyd.pause(); try { lyd.currentTime = 0; } catch(e){} lyd.muted = false; }).catch(()=>{ lyd.muted = false; });
+      if(p && p.then) p.then(()=>{
+        if(musikStartet) return;
+        lyd.pause(); try { lyd.currentTime = 0; } catch(e){} lyd.muted = false;
+      }).catch(()=>{ lyd.muted = false; });
     } catch(e){}
   }
   // Tekst-sliden vises ved 2 sek, musikken starter 1 sek derinde
   const startTimer = setTimeout(()=>{
     if(!musicOn) return;
+    musikStartet = true;
     try { lyd.currentTime = 0; lyd.volume = 1; lyd.muted = false; lyd.play().catch(e=> console.warn('wmusik kunne ikke afspilles, tjek wmusik.mp3:', e)); } catch(e){}
   }, 3000);
   // Musikken er ca. 15 sek: fad blidt ud over dens sidste 3 sek (15 til 18 sek)
