@@ -827,7 +827,7 @@ function margreteInterlude(){
 }
 
 const WATERGATE_FILM = [
-  { h:'<div class="film-title sepia">Nu lige et par historiske billeder</div><div class="film-sub sepia">Fra Washington, 1972</div>', dur:4000 },
+  { h:'<div class="film-title sepia">Nu lige et par historiske billeder</div><div class="film-sub sepia">Fra Washington, 1972</div>', dur:3000 },
   { h:'<img class="film-strip-img" src="images/w1.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
   { h:'<img class="film-strip-img" src="images/w2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
   { h:'<img class="film-strip-img" src="images/w3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000 }
@@ -843,13 +843,13 @@ function watergateInterlude(){
       if(p && p.then) p.then(()=>{ lyd.pause(); try { lyd.currentTime = 0; } catch(e){} lyd.muted = false; }).catch(()=>{ lyd.muted = false; });
     } catch(e){}
   }
-  // Foerste billede vises 7 sek inde i sekvensen, musikken starter 1 sek derinde
+  // Tekst-sliden vises ved 2 sek, musikken starter 1 sek derinde
   const startTimer = setTimeout(()=>{
     if(!musicOn) return;
     try { lyd.currentTime = 0; lyd.volume = 1; lyd.muted = false; lyd.play().catch(e=> console.warn('wmusik kunne ikke afspilles, tjek wmusik.mp3:', e)); } catch(e){}
-  }, 8000);
-  // Musikken er ca. 12 sek: fad blidt ud over dens sidste 3 sek, faerdig naar akten slutter
-  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 3000); }, 17000);
+  }, 3000);
+  // Musikken er ca. 15 sek: fad blidt ud over dens sidste 3 sek (15 til 18 sek)
+  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 3000); }, 15000);
   playFilm(WATERGATE_FILM, ()=>{
     clearTimeout(startTimer); clearTimeout(fadeTimer);
     fadeOutLyd(lyd, 700);
