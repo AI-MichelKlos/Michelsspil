@@ -512,6 +512,7 @@ function intro(){
 
 function startGame(){
   stopAll();
+  ['images/w1.jpg','images/w2.jpg','images/w3.jpg'].forEach(s=>{ try { const im = new Image(); im.src = s; } catch(e){} });
   updateMusicBtn();
   state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, watergateDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
   recordEl.style.display = 'flex';
@@ -690,6 +691,8 @@ const STONE_FILM = [
 
 function playFilm(cards, onDone, opts){
   opts = opts || {};
+  // Hent billeder paa forhaand, ellers ses baggrunden mens browseren loader ved kortskift
+  if(opts.preload){ opts.preload.forEach(src=>{ try { const im = new Image(); im.src = src; } catch(e){} }); }
   const ov = document.createElement('div');
   ov.className = 'film-overlay' + (opts.brun ? ' brun' : '');
   ov.innerHTML = '<div class="film-card" id="film-card"></div><button class="film-skip" id="film-skip">Spring over \u25b8\u25b8</button>';
@@ -824,22 +827,34 @@ function margreteInterlude(){
 }
 
 const WATERGATE_FILM = [
-  { h:'<div class="film-title sepia">Nu lige et par historiske billeder</div><div class="film-sub sepia">Fra Washington, 1972</div>', dur:3000 },
-  { h:'<img class="film-strip-img" src="images/w1.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000, cut:true },
-  { h:'<img class="film-strip-img" src="images/w2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000, cut:true },
-  { h:'<img class="film-strip-img" src="images/w3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 }
+  { h:'<div class="film-title sepia">Nu lige et par historiske billeder</div><div class="film-sub sepia">Fra Washington, 1972</div>', dur:4000 },
+  { h:'<img class="film-strip-img" src="images/w1.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/w2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000, cut:true },
+  { h:'<img class="film-strip-img" src="images/w3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:4000 }
 ];
 
 function watergateInterlude(){
   const lyd = document.getElementById('wmusik');
-  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(e=> console.warn('wmusik kunne ikke afspilles, tjek wmusik.mp3:', e)); } catch(e){} }
-  // Musikken er ca. 12 sek: fad blidt ud over de sidste 3 sek af den (start ved 9 sek)
-  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 3000); }, 9000);
+  // Prime lyden i selve klik-handleren, saa iOS tillader at den starter senere
+  if(musicOn){
+    try {
+      lyd.muted = true;
+      const p = lyd.play();
+      if(p && p.then) p.then(()=>{ lyd.pause(); try { lyd.currentTime = 0; } catch(e){} lyd.muted = false; }).catch(()=>{ lyd.muted = false; });
+    } catch(e){}
+  }
+  // Foerste billede vises 7 sek inde i sekvensen, musikken starter 1 sek derinde
+  const startTimer = setTimeout(()=>{
+    if(!musicOn) return;
+    try { lyd.currentTime = 0; lyd.volume = 1; lyd.muted = false; lyd.play().catch(e=> console.warn('wmusik kunne ikke afspilles, tjek wmusik.mp3:', e)); } catch(e){}
+  }, 8000);
+  // Musikken er ca. 12 sek: fad blidt ud over dens sidste 3 sek, faerdig naar akten slutter
+  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 3000); }, 17000);
   playFilm(WATERGATE_FILM, ()=>{
-    clearTimeout(fadeTimer);
+    clearTimeout(startTimer); clearTimeout(fadeTimer);
     fadeOutLyd(lyd, 700);
     state.i++; showCase();
-  }, { brun:true });
+  }, { brun:true, preload:['images/w1.jpg','images/w2.jpg','images/w3.jpg'] });
 }
 
 function interlude(){
