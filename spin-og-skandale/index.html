@@ -202,6 +202,10 @@
   .film-sub{font-family:'Space Mono',monospace;font-size:13px;color:#8a8577;margin-top:14px;letter-spacing:1px}
   .film-hoved{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:6px;font-weight:600;font-size:clamp(30px,9vw,58px);color:var(--gold);text-shadow:0 0 30px rgba(201,162,75,.35)}
   .film-video{display:block;max-width:min(100%,900px);max-height:100vh;width:100%}
+  .film-overlay.brun{background:#2b1d12}
+  .film-strip-img{display:block;max-width:min(100%,760px);max-height:88vh;width:auto;border:4px solid #d9c7a3;box-shadow:0 6px 30px rgba(0,0,0,.6);border-radius:4px}
+  .film-title.sepia{color:#e8d5b0}
+  .film-sub.sepia{color:#b09a72}
   .film-pic{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 14px rgba(0,0,0,.5);margin-bottom:20px}
   .film-skip{position:fixed;right:16px;bottom:16px;background:transparent;border:1px solid rgba(242,237,226,.3);color:rgba(242,237,226,.75);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;padding:8px 14px;border-radius:5px;cursor:pointer;z-index:9999}
   button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -218,7 +222,7 @@
   .copy-toast.vis{ opacity:1; transform:translate(-50%,-50%) scale(1); }
   .copy-toast .chk{ font-family:'Permanent Marker',cursive; color:var(--green); font-size:20px; margin-right:8px; text-transform:none; letter-spacing:0; }
 </style>
-<script data-goatcounter="https://spinogskandale.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></head>
+</head>
 <body>
   <button id="music-btn" onclick="toggleMusic()" title="Sluk musik">♫</button>
 <div class="stage">
@@ -243,6 +247,7 @@
   <audio id="raad-lyd" src="machiavelli-lyd.mp3" preload="none"></audio>
   <audio id="stone-lyd" src="stone-lyd.mp3" preload="none"></audio>
   <audio id="margrete-lyd" src="margrete-lyd.mp3" preload="none"></audio>
+  <audio id="wmusik" src="wmusik.mp3" preload="none"></audio>
   <div class="footer">
     Udviklet af <span>KlosKlos og Reagan Production</span>
   </div>
@@ -419,7 +424,7 @@ function playTrack(which){
   if(off){ off.pause(); off.currentTime = 0; }
   if(on){ on.play().catch(()=>{}); }
 }
-function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd','margrete-lyd'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
+function stopAll(){ bgmIntro.pause(); bgmEnding.pause(); ['raad-lyd','stone-lyd','margrete-lyd','wmusik'].forEach(id=>{ const el = document.getElementById(id); if(el){ try { el.pause(); } catch(e){} } }); }
 function fadeOutLyd(el, ms){
   if(!el || el.paused) return;
   const steps = 20;
@@ -508,7 +513,7 @@ function intro(){
 function startGame(){
   stopAll();
   updateMusicBtn();
-  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
+  state = { i:0, history:[], rigtige:0, slots:{}, started:true, interludeDone:false, stoneDone:false, margreteDone:false, watergateDone:false, deck:FASTE.map(s=> LEVELS.findIndex(l=>l.sag===s)) };
   recordEl.style.display = 'flex';
   renderRecord();
   if(!creditsShown){
@@ -592,7 +597,9 @@ function choose(slot){
     document.getElementById('next').onclick = ()=> ending();
   } else {
     act.innerHTML = `<button class="btn big" id="next">Næste sag ▸</button>`;
-    if(state.i === 4 && !state.interludeDone){
+    if(state.i === 0 && !state.watergateDone){
+      document.getElementById('next').onclick = ()=>{ state.watergateDone = true; watergateInterlude(); };
+    } else if(state.i === 4 && !state.interludeDone){
       document.getElementById('next').onclick = ()=>{ state.interludeDone = true; interlude(); };
     } else if(state.i === 6 && !state.stoneDone){
       document.getElementById('next').onclick = ()=>{ state.stoneDone = true; stoneInterlude(); };
@@ -814,6 +821,25 @@ function margreteInterlude(){
       ov.appendChild(btn);
     }); }
   };
+}
+
+const WATERGATE_FILM = [
+  { h:'<div class="film-title sepia">Nu lige et par historiske billeder</div><div class="film-sub sepia">Fra Washington, 1972</div>', dur:3000 },
+  { h:'<img class="film-strip-img" src="images/w1.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000, cut:true },
+  { h:'<img class="film-strip-img" src="images/w2.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000, cut:true },
+  { h:'<img class="film-strip-img" src="images/w3.jpg" alt="" onerror="this.style.display=\'none\'">', dur:3000 }
+];
+
+function watergateInterlude(){
+  const lyd = document.getElementById('wmusik');
+  if(musicOn){ try { lyd.currentTime = 0; lyd.volume = 1; lyd.play().catch(e=> console.warn('wmusik kunne ikke afspilles, tjek wmusik.mp3:', e)); } catch(e){} }
+  // Musikken er ca. 12 sek: fad blidt ud over de sidste 3 sek af den (start ved 9 sek)
+  const fadeTimer = setTimeout(()=>{ fadeOutLyd(lyd, 3000); }, 9000);
+  playFilm(WATERGATE_FILM, ()=>{
+    clearTimeout(fadeTimer);
+    fadeOutLyd(lyd, 700);
+    state.i++; showCase();
+  }, { brun:true });
 }
 
 function interlude(){
